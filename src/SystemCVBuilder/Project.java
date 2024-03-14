@@ -6,15 +6,16 @@ import javax.swing.*;
 public class Project extends JFrame{
 
     Project() {
-        setSize(1540,850);
+        setSize(1000,700);
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/third.jpg"));
         Image i2 = i1.getImage().getScaledInstance(1500, 750, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JLabel image = new JLabel(i3);
-       
         add(image);
 
         JMenuBar mb= new JMenuBar();
+        setJMenuBar(mb);
+
         // New Information
         JMenu newInfo= new JMenu("New Information");
         newInfo.setForeground(Color.BLUE);
@@ -40,7 +41,7 @@ public class Project extends JFrame{
         JMenuItem studentDetails= new JMenuItem("View Student Details");
         studentDetails.setForeground(Color.WHITE);
         details.add(studentDetails);
-        
+
         // Leave
         JMenu leave= new JMenu("Apply Leave");
         leave.setForeground(Color.RED);
@@ -65,10 +66,10 @@ public class Project extends JFrame{
         JMenuItem studentLeaveDetails= new JMenuItem("View Student Details");
         studentLeaveDetails.setForeground(Color.WHITE);
         leaveDetails.add(studentLeaveDetails);
-        
-        //Exams
-        setJMenuBar(mb);
 
+        //Exams
+
+        setLayout(new FlowLayout());
         setVisible(true);
     }
     public static void main(String[] args) {
