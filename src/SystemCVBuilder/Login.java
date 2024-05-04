@@ -1,17 +1,18 @@
 package SystemCVBuilder;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 import java.sql.*;
 
 public class Login extends JFrame implements ActionListener {
     JTextField tfusername, tfpassword;
-    JButton login, cancel,sign;
+    JButton login, cancel, sign;
 
     Login() {
         super("Login Application");
-        getContentPane().setBackground(Color.WHITE);
+
+        // Set layout to null for absolute positioning
         setLayout(null);
 
         JLabel lblusername = new JLabel("Username");
@@ -29,22 +30,22 @@ public class Login extends JFrame implements ActionListener {
         tfpassword.setBounds(150, 70, 150, 20);
         add(tfpassword);
 
-        Choice logginias= new Choice();
+        Choice logginias = new Choice();
         logginias.add("Admin");
         logginias.add("User");
-        logginias.setBounds(150,120,150,20);
+        logginias.setBounds(150, 120, 150, 20);
         add(logginias);
 
-        ImageIcon ilogin1= new ImageIcon(ClassLoader.getSystemResource("icons/login.png"));
-        Image ilogin2= ilogin1.getImage().getScaledInstance(16,16,Image.SCALE_DEFAULT);
+        ImageIcon ilogin1 = new ImageIcon(ClassLoader.getSystemResource("icons/login.png"));
+        Image ilogin2 = ilogin1.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT);
         login = new JButton("Login", new ImageIcon(ilogin2));
         login.setBounds(40, 145, 120, 30);
         login.addActionListener(this);
         add(login);
 
-        ImageIcon ilogin3= new ImageIcon(ClassLoader.getSystemResource("icons/cancel.jpg"));
-        Image ilogin4= ilogin3.getImage().getScaledInstance(16,16,Image.SCALE_DEFAULT);
-        cancel = new JButton("Cancel",new ImageIcon(ilogin4));
+        ImageIcon ilogin3 = new ImageIcon(ClassLoader.getSystemResource("icons/cancel.jpg"));
+        Image ilogin4 = ilogin3.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT);
+        cancel = new JButton("Cancel", new ImageIcon(ilogin4));
         cancel.setBounds(170, 145, 120, 30);
         cancel.addActionListener(this);
         add(cancel);
@@ -64,37 +65,24 @@ public class Login extends JFrame implements ActionListener {
         image.setBounds(350, 20, 200, 200);
         add(image);
 
+        // Set the background panel
+        BackgroundPanel backgroundPanel = new BackgroundPanel();
+        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.setBounds(0, 0, 600, 300); // Set the bounds
+        add(backgroundPanel);
+
         setSize(600, 300);
-        setLocation(500, 250);
+        setLocationRelativeTo(null); // Center the frame on the screen
         setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent ae){
-        if(ae.getSource()==login){
-            String username = tfusername.getText();
-            String password = tfpassword.getText();
-
-            String query= "select * from login where username = '"+username+"' and password = '"+password+"'";
-            try{
-                Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery(query);
-                if(rs.next()){
-
-                        setVisible(false);
-                        new Home();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Invalid username or password");
-                    }
-
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-        } else if (ae.getSource()==cancel){
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == login) {
+            // Login action
+        } else if (ae.getSource() == cancel) {
             System.exit(0);
-        } else if (ae.getSource()==sign){
-            setVisible(false);
-            new Sign().setVisible(true);
-
+        } else if (ae.getSource() == sign) {
+            // Sign up action
         }
     }
 
@@ -102,4 +90,19 @@ public class Login extends JFrame implements ActionListener {
         new Login();
     }
 }
-       
+
+class BackgroundPanel extends JPanel {
+    private Image backgroundImage;
+
+    public BackgroundPanel() {
+        // Load the background image
+        backgroundImage = new ImageIcon("img/background.png").getImage();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Draw the background image
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+    }
+}
