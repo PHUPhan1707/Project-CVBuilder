@@ -38,7 +38,7 @@ public class Sign extends JFrame implements ActionListener{
         account.setBounds(180, 25, 150, 30);
         panel.add(account);
 
-        JLabel lblmeter = new JLabel("Meter Number:");
+        JLabel lblmeter = new JLabel("Number ID:");
         lblmeter.setBounds(30, 50, 150, 30);
         lblmeter.setForeground(Color.GRAY);
         lblmeter.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -109,10 +109,10 @@ public class Sign extends JFrame implements ActionListener{
             String susername= username.getText();
             String sname= name.getText();
             String spassword= password.getText();
-            String smeter= meter.getText();
+            String sid= meter.getText();
         try {
             Conn c = new Conn();
-            String query = "insert into login values('"+smeter+"','"+susername+"','"+sname+"','"+spassword+"','"+atype+"')";
+            String query = "insert into login values('"+sid+"','"+susername+"','"+sname+"','"+spassword+"','"+atype+"')";
             c.s.executeUpdate(query);
 
             JOptionPane.showMessageDialog(null, "Account Created Successfully");
