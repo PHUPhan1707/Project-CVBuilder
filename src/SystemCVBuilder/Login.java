@@ -74,20 +74,25 @@ public class Login extends JFrame implements ActionListener {
             String username = tfusername.getText();
             String password = tfpassword.getText();
 
-            String query= "select * from login where username = '"+username+"' and password = '"+password+"'";
-            try{
-                Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery(query);
-                if(rs.next()){
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter both username and password");
+            } else {
+                String query = "select * from Login where username = '" + username + "' and password = '" + password + "'";
 
+                try {
+                    Conn c = new Conn();
+                    ResultSet rs = c.s.executeQuery(query);
+                    if (rs.next()) {
                         setVisible(false);
                         new Home();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Invalid username or password");
+                        JOptionPane.showMessageDialog(null, "Mật khẩu hoặc tên đăng nhập chưa đúng");
+
                     }
 
-            } catch(Exception e){
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else if (ae.getSource()==cancel){
             System.exit(0);
