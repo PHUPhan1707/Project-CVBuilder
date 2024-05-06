@@ -8,15 +8,14 @@ public class Conn {
         Connection c;
         Statement s;
 
-        public Conn(){
+        public Conn(){//relationship with all class to database
+
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
 
                 c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdatasystem", "root", "123456");
                 s = c.createStatement();
-
-
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
