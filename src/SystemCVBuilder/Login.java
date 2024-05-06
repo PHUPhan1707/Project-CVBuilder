@@ -50,6 +50,7 @@ public class Login extends javax.swing.JFrame {
 
         cmdLogin.setForeground(new java.awt.Color(0, 0, 0));
         cmdLogin.setText("SIGN IN");
+        cmdLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         cmdLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdLoginActionPerformed(evt);
