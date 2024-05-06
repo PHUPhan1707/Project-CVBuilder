@@ -1,110 +1,139 @@
 package SystemCVBuilder;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.sql.*;
+import java.awt.Color;
 
-public class Login extends JFrame implements ActionListener {
-    JTextField tfusername, tfpassword;
-    JButton login, cancel,sign;
+/**
+ *
+ * @author RAVEN
+ */
+public class Login extends javax.swing.JFrame {
 
-    Login() {
-        super("Login Application");
-        getContentPane().setBackground(Color.WHITE);
-        setLayout(null);
-
-        JLabel lblusername = new JLabel("Username");
-        lblusername.setBounds(40, 20, 100, 20);
-        add(lblusername);
-
-        tfusername = new JTextField();
-        tfusername.setBounds(150, 20, 150, 20);
-        add(tfusername);
-
-        JLabel lblpassword = new JLabel("Password");
-        lblpassword.setBounds(40, 70, 100, 20);
-        add(lblpassword);
-        tfpassword = new JPasswordField();
-        tfpassword.setBounds(150, 70, 150, 20);
-        add(tfpassword);
-
-        Choice logginias= new Choice();
-        logginias.add("Admin");
-        logginias.add("User");
-        logginias.setBounds(150,120,150,20);
-        add(logginias);
-
-        ImageIcon ilogin1= new ImageIcon(ClassLoader.getSystemResource("icons/login.png"));
-        Image ilogin2= ilogin1.getImage().getScaledInstance(16,16,Image.SCALE_DEFAULT);
-        login = new JButton("Login", new ImageIcon(ilogin2));
-        login.setBounds(40, 145, 120, 30);
-        login.addActionListener(this);
-        add(login);
-
-        ImageIcon ilogin3= new ImageIcon(ClassLoader.getSystemResource("icons/cancel.jpg"));
-        Image ilogin4= ilogin3.getImage().getScaledInstance(16,16,Image.SCALE_DEFAULT);
-        cancel = new JButton("Cancel",new ImageIcon(ilogin4));
-        cancel.setBounds(170, 145, 120, 30);
-        cancel.addActionListener(this);
-        add(cancel);
-
-        sign = new JButton("Sign Up");
-        sign.setBounds(100, 180, 120, 30);
-        sign.setBackground(Color.BLACK);
-        sign.setForeground(Color.WHITE);
-        sign.setFont(new Font("Tahoma", Font.BOLD, 15));
-        sign.addActionListener(this);
-        add(sign);
-
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/second.jpg"));
-        Image i2 = i1.getImage().getScaledInstance(200, 200, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel image = new JLabel(i3);
-        image.setBounds(350, 20, 200, 200);
-        add(image);
-
-        setSize(600, 300);
-        setLocation(500, 250);
-        setVisible(true);
+    /**
+     * Creates new form Login
+     */
+    public Login() {
+        initComponents();
+        setBackground(new Color(0, 0, 0, 0));
     }
 
-    public void actionPerformed(ActionEvent ae){
-        if(ae.getSource()==login){
-            String username = tfusername.getText();
-            String password = tfpassword.getText();
+        jLabel1.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("SIGN IN");
 
-            if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter both username and password");
-            } else {
-                String query = "select * from Login where username = '" + username + "' and password = '" + password + "'";
+        cmdLogin.setForeground(new java.awt.Color(0, 0, 0));
+        cmdLogin.setText("SIGN IN");
+        cmdLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdLoginActionPerformed(evt);
+            }
+        });
 
-                try {
-                    Conn c = new Conn();
-                    ResultSet rs = c.s.executeQuery(query);
-                    if (rs.next()) {
-                        setVisible(false);
-                        new Home();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Mật khẩu hoặc tên đăng nhập chưa đúng");
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
+        );
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(jLabel1)
+                .addGap(30, 30, 30)
+                .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(cmdLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(70, Short.MAX_VALUE))
+        );
 
-                    }
+        javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
+        background.setLayout(backgroundLayout);
+        backgroundLayout.setHorizontalGroup(
+            backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(backgroundLayout.createSequentialGroup()
+                .addContainerGap(311, Short.MAX_VALUE)
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(311, Short.MAX_VALUE))
+        );
+        backgroundLayout.setVerticalGroup(
+            backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(backgroundLayout.createSequentialGroup()
+                .addContainerGap(136, Short.MAX_VALUE)
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(137, Short.MAX_VALUE))
+        );
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void cmdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoginActionPerformed
+        String user = txtUser.getText();
+        String pass = String.valueOf(txtPassword.getPassword());
+    }//GEN-LAST:event_cmdLoginActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
                 }
             }
-        } else if (ae.getSource()==cancel){
-            System.exit(0);
-        } else if (ae.getSource()==sign){
-            setVisible(false);
-            new Sign().setVisible(true);
-
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Login().setVisible(true);
+            }
+        });
     }
 
-    public static void main(String[] args) {
-        new Login();
-    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private login.Background background;
+    private swing.Button cmdLogin;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel panel;
+    private swing.PasswordField txtPassword;
+    private swing.TextField txtUser;
+    // End of variables declaration//GEN-END:variables
 }
-       
