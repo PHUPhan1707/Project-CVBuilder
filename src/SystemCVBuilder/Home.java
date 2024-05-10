@@ -1,5 +1,7 @@
 package SystemCVBuilder;
 
+import swing.viewResumeScreen;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -30,7 +32,7 @@ public class Home extends JFrame implements ActionListener{
 
         view = new JButton("View Resume");
         view.setBounds(650,140,150,40);
-        add.addActionListener(this);
+        view.addActionListener(this);
 
         image.add(view);
         update = new JButton("Updata Resume");
@@ -54,8 +56,9 @@ public class Home extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == add){
 
-        }else if (e.getSource() == view){
-
+        }else if (e.getSource() == view){ // mở view screen
+            viewResumeScreen viewResumeScreen = new viewResumeScreen();
+            viewResumeScreen.setVisible(true);
         } else if (e.getSource() == update){
 
         }else if (e.getSource() == remove){
