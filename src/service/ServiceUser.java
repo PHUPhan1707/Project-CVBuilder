@@ -26,7 +26,7 @@ public class ServiceUser {
         p.setString(4, code);
         p.execute();
         ResultSet r = p.getGeneratedKeys();
-        r.first();
+        r.next();
         int userID = r.getInt(1);
         r.close();
         p.close();
@@ -49,7 +49,7 @@ public class ServiceUser {
         PreparedStatement p = con.prepareStatement("select UserID from `user` where VerifyCode=? limit 1");
         p.setString(1, code);
         ResultSet r = p.executeQuery();
-        if (r.first()) {
+        if (r.next()) {
             duplicate = true;
         }
         r.close();
@@ -62,20 +62,26 @@ public class ServiceUser {
         PreparedStatement p = con.prepareStatement("select UserID from `user` where UserName=? and `Status`='Verified' limit 1");
         p.setString(1, user);
         ResultSet r = p.executeQuery();
-        if (r.first()) {
+        
+        // Check if the ResultSet has any rows
+        if (r.next()) {
             duplicate = true;
         }
+        
+        // Close the ResultSet and PreparedStatement
         r.close();
         p.close();
+        
         return duplicate;
     }
+    
 
     public boolean checkDuplicateEmail(String user) throws SQLException {
         boolean duplicate = false;
         PreparedStatement p = con.prepareStatement("select UserID from `user` where Email=? and `Status`='Verified' limit 1");
         p.setString(1, user);
         ResultSet r = p.executeQuery();
-        if (r.first()) {
+        if (r.next()) {
             duplicate = true;
         }
         r.close();
@@ -96,7 +102,7 @@ public class ServiceUser {
         p.setInt(1, userID);
         p.setString(2, code);
         ResultSet r = p.executeQuery();
-        if (r.first()) {
+        if (r.next()) {
             verify = true;
         }
         r.close();

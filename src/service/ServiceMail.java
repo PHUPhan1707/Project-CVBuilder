@@ -14,14 +14,14 @@ public class ServiceMail {
 
     public ModelMessage sendMain(String toEmail, String code) {
         ModelMessage ms = new ModelMessage(false, "");
-        String from = "******@gmail.com";
+        String from = "thanhle8461@gmail.com";
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true");
-        String username = "******@gmail.com";
-        String password = "******";    //  Your email password here
+        String username = "thanhle8461@gmail.com";
+        String password = "czvubdxetwnvzbez";    //  Your email password here
         Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
