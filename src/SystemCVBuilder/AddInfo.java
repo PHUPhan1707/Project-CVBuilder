@@ -5,17 +5,15 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.io.*;
 public class AddInfo extends JFrame {
     private JLabel avatarLabel;
     private JButton uploadButton;
     private String imagePath;
     private byte[] imageData;
-
+    private int userID;
+    private ExportToPDF exporter;
     AddInfo() {
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
@@ -100,7 +98,7 @@ public class AddInfo extends JFrame {
                 }
             }
         });
-        // Tiêu đề 
+        // Tiêu đề
         JLabel labelFirstName = new JLabel("First Name:");
         labelFirstName.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
         add(labelFirstName);
@@ -269,13 +267,12 @@ public class AddInfo extends JFrame {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdatasystem", "root", "123456");
 
                     // Câu lệnh SQL INSERT
-                    String sql = "INSERT INTO cv_info (first_name, last_name, date_of_birth, address, post_code, nationality, email, university, degree, skill1, skill2, skill3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    String sql = "INSERT INTO cv_info (first_name, last_name, date_of_birth, address, post_code, nationality, email, university, degree, skill1, skill2, skill3, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
                     PreparedStatement statement = conn.prepareStatement(sql);
 
                     // Lấy thông tin từ các trường nhập liệu
                     statement.setString(1, tfFirstName.getText());
                     statement.setString(2, tfLastName.getText());
-                    // Tương tự cho các trường khác
                     java.sql.Date dob = new java.sql.Date(tfdob.getDate().getTime());
                     statement.setDate(3, dob);
                     statement.setString(4, address1Field.getText());
@@ -287,12 +284,24 @@ public class AddInfo extends JFrame {
                     statement.setString(10, skillsField1.getText());
                     statement.setString(11, skillsField2.getText());
                     statement.setString(12, skillsField3.getText());
-
+                    statement.setBytes(13, imageData);
 
                     // Thực thi câu lệnh INSERT
                     int rowsInserted = statement.executeUpdate();
                     if (rowsInserted > 0) {
                         System.out.println("Thông tin đã được lưu vào cơ sở dữ liệu!");
+                        try {
+                            Connection connGetID = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdatasystem", "root", "123456");
+                            String sqlGetID = "SELECT LAST_INSERT_ID()";
+                            PreparedStatement statementGetID = conn.prepareStatement(sqlGetID);
+                            ResultSet resultSet = statementGetID.executeQuery();
+                            if (resultSet.next()) {
+                                userID = resultSet.getInt(1);
+                            }
+                            conn.close();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
                     }
 
                     // Đóng kết nối
@@ -304,11 +313,28 @@ public class AddInfo extends JFrame {
 
         });
 
+        exporter = new ExportToPDF();
+        // Thêm nút để xuất file PDF
+        JButton exportPDFButton = new JButton("Export PDF");
+        add(exportPDFButton);
+        exportPDFButton.setBounds(400, 450, 120, 30);
+
+        // Thêm ActionListener cho nút xuất file PDF
+        exportPDFButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    exporter.exportDataToPDF(userID); // Gọi phương thức xuất PDF đã được tạo trước đó
+                    System.out.println("PDF file exported successfully.");
+                } catch (Exception ex) {
+                    System.err.println("Error exporting PDF: " + ex.getMessage());
+                }
+            }
+        });
+
+
 
     }
     public static void main(String[] args) {
         new AddInfo();
     }
 }
-
-

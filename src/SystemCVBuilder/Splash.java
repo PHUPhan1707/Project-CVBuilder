@@ -28,7 +28,7 @@ public class Splash extends JFrame  {
 
     JButton click= new JButton("Make Your Resume");
     click.setBackground(Color.WHITE);
-    click.setBounds(485, 400, 200, 50);
+    click.setBounds(800, 400, 200, 50);
     click.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
     click.setFocusPainted(false);
     click.setFont(new Font("Tahoma", Font.ITALIC, 16));

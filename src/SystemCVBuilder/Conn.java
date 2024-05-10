@@ -20,6 +20,9 @@ public class Conn {
                 e.printStackTrace();
             }
         }
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        return c.prepareStatement(sql);
+    }
     }
 
 
