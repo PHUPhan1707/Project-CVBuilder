@@ -75,7 +75,7 @@ public class Splash extends javax.swing.JFrame {
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
         new splashscreen.SplashScreen(null, true).setVisible(true);
-        new Splash().setVisible(true);
+        new Login().setVisible(true);
       }
     });
   }

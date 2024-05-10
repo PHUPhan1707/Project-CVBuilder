@@ -13,7 +13,7 @@ public class Conn {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
 
-                c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdatasystem", "root", "123456");
+                c = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvs", "root", "123456");
                 s = c.createStatement();
 
 
