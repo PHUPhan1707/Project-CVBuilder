@@ -21,12 +21,22 @@ public class DatabaseConnection {
     }
 
     public void connectToDatabase() throws SQLException {
-        String server = "ADMIN\\MSSQLSERVER01";
-        String port = "1434";
-        String database = "UserEmail";
-        String userName = "kazeru280603";
+        String server = "127.0.0.1";
+        String port = "3306";
+        String database = "cvdata";
+        String userName = "thanh8461";
         String password = "thanh8461";
-connection = DriverManager.getConnection("jdbc:sqlserver://" + server + ":" + port + ";databaseName=" + database, userName, password);
+
+        // Load the JDBC driver class (com.mysql.cj.jdbc.Driver)
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("MySQL JDBC driver not found.");
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+
+        connection = DriverManager.getConnection("jdbc:mysql://" + server + ":" + port + "/" + database, userName, password);
     }
 
     public Connection getConnection() {
