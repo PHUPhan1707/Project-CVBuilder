@@ -75,11 +75,14 @@ public class Splash extends javax.swing.JFrame {
     java.awt.EventQueue.invokeLater(new Runnable() {
       public void run() {
         new splashscreen.SplashScreen(null, true).setVisible(true);
-        new Splash().setVisible(true);
+        Splash splash = new Splash();
+        splash.setVisible(true);
+        // Close the splash screen after it finishes running
+        splash.dispose();
+        // Initialize and display the Login class
+        new Login().setVisible(true);
       }
     });
   }
 
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  // End of variables declaration//GEN-END:variables
 }
