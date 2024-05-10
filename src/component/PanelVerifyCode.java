@@ -31,12 +31,12 @@ public class PanelVerifyCode extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelRound1 = new com.raven.swing.PanelRound();
-        txtCode = new com.raven.swing.MyTextField();
+        panelRound1 = new swing.PanelRound();
+        txtCode = new swing.MyTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        cmdOK = new com.raven.swing.ButtonOutLine();
-        cmdCancel = new com.raven.swing.ButtonOutLine();
+        cmdOK = new swing.ButtonOutLine();
+        cmdCancel = new swing.ButtonOutLine();
 
         txtCode.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
@@ -135,11 +135,11 @@ public class PanelVerifyCode extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.ButtonOutLine cmdCancel;
-    private com.raven.swing.ButtonOutLine cmdOK;
+    private swing.ButtonOutLine cmdCancel;
+    private swing.ButtonOutLine cmdOK;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private com.raven.swing.PanelRound panelRound1;
-    private com.raven.swing.MyTextField txtCode;
+    private swing.PanelRound panelRound1;
+    private swing.MyTextField txtCode;
     // End of variables declaration//GEN-END:variables
 }

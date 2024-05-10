@@ -119,10 +119,10 @@ public class PanelCover extends javax.swing.JPanel {
         layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%");
     }
 
-    public void login(boolean login) {
+    private void login(boolean login) {
         if (this.isLogin != login) {
             if (login) {
-                title.setText("Hello, Friend!");
+                title.setText("hello, Friend!");
                 description.setText("Enter your personal details");
                 description1.setText("and start journey with us");
                 button.setText("SIGN UP");
