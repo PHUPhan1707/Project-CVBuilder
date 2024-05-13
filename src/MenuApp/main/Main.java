@@ -1,8 +1,13 @@
 package MenuApp.main;
 
 import MenuApp.event.EventMenu;
-import java.awt.Color;
-import javax.swing.JOptionPane;
+import net.miginfocom.swing.MigLayout;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import javax.swing.*;
 
 public class Main extends javax.swing.JFrame {
 
@@ -114,3 +119,4 @@ public class Main extends javax.swing.JFrame {
     private MenuApp.swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
 }
+

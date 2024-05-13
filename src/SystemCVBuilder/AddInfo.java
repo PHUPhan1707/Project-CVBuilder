@@ -20,9 +20,9 @@ public class AddInfo extends JFrame {
     private String imagePath;
     private byte[] imageData;
     private int userID;
-    private ExportToPDF exporter;
 
-    AddInfo() {
+
+    public AddInfo() {
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 
@@ -303,17 +303,71 @@ public class AddInfo extends JFrame {
             }
         });
 
-        exporter = new ExportToPDF();
         JButton exportPDFButton = new JButton("Export PDF");
         add(exportPDFButton);
         exportPDFButton.setBounds(450, 450, 120, 30);
         exportPDFButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    exporter.exportDataToPDF(userID);
-                    System.out.println("PDF file exported successfully.");
-                } catch (Exception ex) {
-                    System.err.println("Error exporting PDF: " + ex.getMessage());
+                    JFrame frame = new JFrame("CV Template");
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setLayout(new BorderLayout());
+
+                    // Tạo một ImageIcon từ tệp hình ảnh
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/icons/template1.jpg"));
+
+
+
+                    // Tạo một JLabel để hiển thị hình ảnh
+                    JLabel label = new JLabel(icon);
+                    label.setHorizontalAlignment(JLabel.CENTER);
+                    label.setVerticalAlignment(JLabel.CENTER);
+
+                    // Tính toán kích thước mới cho hình ảnh
+                    int desiredWidth = 1200;
+                    int desiredHeight = (int) (((double) icon.getIconHeight() / icon.getIconWidth()) * desiredWidth);
+
+                    // Thay đổi kích thước của hình ảnh
+                    Image img = icon.getImage().getScaledInstance(desiredWidth, desiredHeight, Image.SCALE_SMOOTH);
+                    icon = new ImageIcon(img);
+                    label.setIcon(icon);
+
+                    // Tạo một JLabel để hiển thị tên
+                    JLabel nameLabel = new JLabel("Your Name");
+                    nameLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Đặt font chữ và kích thước
+                    nameLabel.setForeground(Color.WHITE); // Đặt màu chữ
+                    nameLabel.setBounds(100, 100, 200, 30); // Đặt vị trí và kích thước
+                    label.add(nameLabel); // Thêm JLabel vào JLabel chứa hình ảnh
+
+// Tạo một JLabel để hiển thị tuổi
+                    JLabel ageLabel = new JLabel("Your Age");
+                    ageLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Đặt font chữ và kích thước
+                    ageLabel.setForeground(Color.WHITE); // Đặt màu chữ
+                    ageLabel.setBounds(100, 150, 200, 30); // Đặt vị trí và kích thước
+                    label.add(ageLabel); // Thêm JLabel vào JLabel chứa hình ảnh
+
+
+                    // Tạo JScrollPane để chứa JLabel và tạo thanh cuộn khi cần
+                    JScrollPane scrollPane = new JScrollPane(label);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+                    // Thêm JScrollPane vào cửa sổ JFrame
+                    frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+                    // Lấy kích thước màn hình
+                    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                    int screenWidth = (int) screenSize.getWidth();
+                    int screenHeight = (int) screenSize.getHeight();
+
+                    // Cài đặt kích thước cho cửa sổ JFrame
+                    frame.setSize(screenWidth, screenHeight);
+                    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+                    // Hiển thị cửa sổ JFrame
+                    frame.setVisible(true);
+                } catch (HeadlessException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -341,7 +395,7 @@ public class AddInfo extends JFrame {
                                 ResultSet resultSet = statement.executeQuery();
                                 if (resultSet.next()) {
                                     String fullName = resultSet.getString("FName") + " " + resultSet.getString("LName");
-                                    String dateOfBirth = resultSet.getString("dob");
+                                    String dateOfBirth = resultSet.getString(   "dob");
                                     String address = resultSet.getString("Address");
                                     String postCode = resultSet.getString("post_code");
                                     String nationality = resultSet.getString("nationality");
@@ -354,6 +408,8 @@ public class AddInfo extends JFrame {
                                     String experience = resultSet.getString("experience");
                                     double pageWidth = pageFormat.getImageableWidth();
                                     double pageHeight = pageFormat.getImageableHeight();
+                                    Image background = Toolkit.getDefaultToolkit().getImage("icons/background.jpg"); // Đường dẫn đến hình ảnh mẫu
+                                    g2d.drawImage(background, 0, 0, (int) pageWidth, (int) pageHeight, null); // Vẽ hình ảnh mẫu
                                     g2d.setColor(new Color(240, 240, 240));
                                     g2d.fillRect(0, 0, (int) pageWidth, (int) pageHeight);
                                     Font titleFont = new Font("Arial", Font.BOLD, 14);

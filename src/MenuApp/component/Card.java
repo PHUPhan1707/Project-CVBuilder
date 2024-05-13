@@ -1,6 +1,8 @@
 package MenuApp.component;
 
 import MenuApp.model.Model_Card;
+import SystemCVBuilder.AddInfo;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GradientPaint;
@@ -83,6 +85,14 @@ public class Card extends javax.swing.JPanel {
                 timerStop.start();
             }
         });
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Mở AddInfo() khi người dùng nhấp vào thẻ
+                new AddInfo().setVisible(true);
+            }
+        });
+
     }
 
     @SuppressWarnings("unchecked")

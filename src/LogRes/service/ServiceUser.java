@@ -109,4 +109,14 @@ public class ServiceUser {
         p.close();
         return verify;
     }
+    public boolean checkLogin(String userName, String password) throws SQLException {
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM user WHERE UserName = ? AND Password = ?")) {
+            statement.setString(1, userName);
+            statement.setString(2, password);
+            try (ResultSet rs = statement.executeQuery()) {
+                return rs.next(); // Trả về true nếu có bản ghi tồn tại
+            }
+        }
+    }
 }

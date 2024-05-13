@@ -10,7 +10,7 @@ public class Sign extends JFrame implements ActionListener{
     JButton create, back;
     JTextField meter, username, name, password;
     Choice account;
-    Sign() {
+    public Sign() {
 
         getContentPane().setBackground(Color.WHITE);
         setLayout(null);

@@ -7,11 +7,20 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import javax.swing.JButton;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import MenuApp.component.Menu;
+import MenuApp.main.Main;
+import SystemCVBuilder.Conn;
+import SystemCVBuilder.Login;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
@@ -32,6 +41,9 @@ public class Button extends JButton {
     private Point pressedPoint;
     private float alpha;
     private Color effectColor = new Color(255, 255, 255);
+
+    private String username; // Thêm thuộc tính để lưu trữ tên người dùng
+    private String password; // Thêm thuộc tính để lưu trữ mật khẩu
 
     public Button() {
         setContentAreaFilled(false);
