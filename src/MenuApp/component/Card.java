@@ -16,6 +16,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class Card extends javax.swing.JPanel {
@@ -82,8 +86,23 @@ public class Card extends javax.swing.JPanel {
             public void mouseExited(MouseEvent me) {
                 timerStop.start();
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            // Show picture preview here
+            showPicturePreview();
+            }
         });
     }
+
+
+
+private void showPicturePreview() {
+    ImageIcon image = (ImageIcon) data.getIcon();
+    PicturePreviewDialogue dialog = new PicturePreviewDialogue((JFrame) SwingUtilities.getWindowAncestor(this), image);
+    dialog.setVisible(true);
+}
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

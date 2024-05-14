@@ -16,9 +16,9 @@ public class Form_Home extends javax.swing.JPanel {
     private void init() {
         panel.setLayout(new WrapLayout(WrapLayout.LEADING));
         jScrollPane1.setVerticalScrollBar(new ScrollBar());
-        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/1.jpg")), "Lean Java UI", "Leaning java\nswing ui design\nlike and Subscribe\nthank for watch")));
-        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/2.jpg")), "Lean Java UI", "Leaning java\nswing ui design\nlike and Subscribe\nthank for watch")));
-        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/3.jpg")), "Lean Java UI", "Leaning java\nswing ui design\nlike and Subscribe\nthank for watch")));
+        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/CV1.jpg")), "Minimal Bluish Template", "A minimal blueish template\nthat is suitable for\nmaking the readers\nfeel strongly immersed")));
+        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/CV2.jpg")), "Minimal Redish Template", "A minimal redish template\nthat can show your\ncreativity and enthusiasm\namong others")));
+        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/CV3.jpg")), "Black & White Template", "A minimal black and white template\nthat can make\nreaders to feel more comfortable\nand easier to keep track")));
         panel.revalidate();
         panel.repaint();
     }
