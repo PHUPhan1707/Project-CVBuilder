@@ -2,10 +2,16 @@ package SystemCVBuilder;
 
 import java.awt.*;
 import javax.swing.*;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -139,10 +145,10 @@ public class AddInfo extends JFrame {
 
         yPosition += gap;
 
-        JLabel postCodeLabel = new JLabel("Post Code:");
+        JLabel postCodeLabel = new JLabel("Phone:");
         postCodeLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
         add(postCodeLabel);
-        postCodeLabel.setBounds(50, yPosition, labelWidth, labelHeight);
+        postCodeLabel.setBounds(50, yPosition, labelWidth + 20, labelHeight);
 
         JTextField postCodeField = new JTextField();
         add(postCodeField);
@@ -243,10 +249,13 @@ public class AddInfo extends JFrame {
         add(experienceLabel);
         experienceLabel.setBounds(370, yPosition - 40, labelWidth, labelHeight);
 
-        JTextField experienceField = new JTextField();
+        JTextArea experienceField = new JTextArea();
         experienceField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
         add(experienceField);
         experienceField.setBounds(450, yPosition - 40, textFieldWidth, 2 * labelHeight);
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        experienceField.setBorder(border);
+        experienceField.setOpaque(true);
 
 
         yPosition += 5 * gap;
@@ -262,8 +271,8 @@ public class AddInfo extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvs", "root", "123456");
-                    String sql = "INSERT INTO informationcv (FName, LName, dob, Address, post_code, nationality, email, university, degree, skill1, skill2, skill3, experience, avatar) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
+                    String sql = "INSERT INTO informationcv (FName, LName, dob, Address, phone, nationality, email, university, degree, skill1, skill2, skill3, experience, avatar) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
                     PreparedStatement statement = conn.prepareStatement(sql);
                     statement.setString(1, tfFirstName.getText());
                     statement.setString(2, tfLastName.getText());
@@ -284,7 +293,7 @@ public class AddInfo extends JFrame {
                     if (rowsInserted > 0) {
                         System.out.println("Thông tin đã được lưu vào cơ sở dữ liệu!");
                         try {
-                            Connection connGetID = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvs", "root", "123456");
+                            Connection connGetID = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
                             String sqlGetID = "SELECT LAST_INSERT_ID()";
                             PreparedStatement statementGetID = conn.prepareStatement(sqlGetID);
                             ResultSet resultSet = statementGetID.executeQuery();
@@ -317,7 +326,6 @@ public class AddInfo extends JFrame {
                     ImageIcon icon = new ImageIcon(getClass().getResource("/icons/template1.jpg"));
 
 
-
                     // Tạo một JLabel để hiển thị hình ảnh
                     JLabel label = new JLabel(icon);
                     label.setHorizontalAlignment(JLabel.CENTER);
@@ -336,16 +344,87 @@ public class AddInfo extends JFrame {
                     JLabel nameLabel = new JLabel("Your Name");
                     nameLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Đặt font chữ và kích thước
                     nameLabel.setForeground(Color.WHITE); // Đặt màu chữ
-                    nameLabel.setBounds(100, 100, 200, 30); // Đặt vị trí và kích thước
+                    nameLabel.setBounds(100, 100, 250, 30); // Đặt vị trí và kích thước
                     label.add(nameLabel); // Thêm JLabel vào JLabel chứa hình ảnh
 
 // Tạo một JLabel để hiển thị tuổi
-                    JLabel ageLabel = new JLabel("Your Age");
-                    ageLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Đặt font chữ và kích thước
+                    JLabel ageLabel = new JLabel("Your Brith Day");
+                    ageLabel.setFont(new Font("Arial", Font.BOLD, 23)); // Đặt font chữ và kích thước
                     ageLabel.setForeground(Color.WHITE); // Đặt màu chữ
                     ageLabel.setBounds(100, 150, 200, 30); // Đặt vị trí và kích thước
                     label.add(ageLabel); // Thêm JLabel vào JLabel chứa hình ảnh
 
+                    JLabel avatarLabel = new JLabel();
+                    avatarLabel.setHorizontalAlignment(JLabel.CENTER);
+                    avatarLabel.setVerticalAlignment(JLabel.CENTER);
+                    avatarLabel.setBounds(100, 200, 200, 200); // Đặt vị trí và kích thước cho avatar label
+                    label.add(avatarLabel);
+
+                    JLabel addressLabel = new JLabel("Address: ");
+                    addressLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    addressLabel.setForeground(Color.BLACK);
+                    addressLabel.setBounds(300, 650, 400, 30);
+                    label.add(addressLabel);
+
+                    JLabel phoneLabel = new JLabel("Phone: ");
+                    phoneLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    phoneLabel.setForeground(Color.BLACK);
+                    phoneLabel.setBounds(300, 605, 400, 30);
+                    label.add(phoneLabel);
+
+                    JLabel nationalityLabel = new JLabel("Nationality: ");
+                    nationalityLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    nationalityLabel.setForeground(Color.BLACK);
+                    nationalityLabel.setBounds(725, 450, 400, 30);
+                    label.add(nationalityLabel);
+
+                    JLabel emailLabel = new JLabel("Email: ");
+                    emailLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    emailLabel.setForeground(Color.BLACK);
+                    emailLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                    emailLabel.setBounds(300, 690, 400, 30);
+                    label.add(emailLabel);
+
+                    JLabel universityLabel = new JLabel("University: ");
+                    universityLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+                    universityLabel.setForeground(Color.BLACK);
+                    universityLabel.setBounds(680, 610, 400, 30);
+                    label.add(universityLabel);
+
+                    JLabel degreeLabel = new JLabel("Degree: ");
+                    degreeLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    degreeLabel.setForeground(Color.BLACK);
+                    degreeLabel.setBounds(680, 650, 400, 30);
+                    label.add(degreeLabel);
+
+                    JLabel skill1Label = new JLabel("Skill 1: ");
+                    skill1Label.setFont(new Font("Arial", Font.PLAIN, 23));
+                    skill1Label.setForeground(Color.BLACK);
+                    skill1Label.setHorizontalAlignment(SwingConstants.LEFT);
+                    skill1Label.setBounds(280, 1000, 400, 30);
+                    label.add(skill1Label);
+
+                    JLabel skill2Label = new JLabel("Skill 2: ");
+                    skill2Label.setFont(new Font("Arial", Font.PLAIN, 23));
+                    skill2Label.setForeground(Color.BLACK);
+                    skill2Label.setHorizontalAlignment(SwingConstants.LEFT);
+                    skill2Label.setBounds(280, 1075, 400, 30);
+                    label.add(skill2Label);
+
+                    JLabel skill3Label = new JLabel("Skill 3: ");
+                    skill3Label.setFont(new Font("Arial", Font.PLAIN, 23));
+                    skill3Label.setForeground(Color.BLACK);
+                    skill3Label.setHorizontalAlignment(SwingConstants.LEFT);
+                    skill3Label.setBounds(280, 1150, 400, 30);
+                    label.add(skill3Label);
+
+                    JTextArea experienceLabel = new JTextArea("Experience: ");
+                    experienceLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    experienceLabel.setForeground(Color.BLACK);
+                    experienceLabel.setAlignmentX(SwingConstants.LEFT);
+                    experienceLabel.setBounds(680, 1000, 400, 200);
+                    experienceLabel.setOpaque(false);
+                    label.add(experienceLabel);
 
                     // Tạo JScrollPane để chứa JLabel và tạo thanh cuộn khi cần
                     JScrollPane scrollPane = new JScrollPane(label);
@@ -354,7 +433,12 @@ public class AddInfo extends JFrame {
 
                     // Thêm JScrollPane vào cửa sổ JFrame
                     frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+                    JScrollPane scrollPane2 = new JScrollPane(label);
+                    scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); // Đặt chế độ cuộn ngang
+                    scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+// Thêm JScrollPane vào cửa sổ JFrame
+                    frame.getContentPane().add(scrollPane2, BorderLayout.CENTER);
                     // Lấy kích thước màn hình
                     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                     int screenWidth = (int) screenSize.getWidth();
@@ -362,106 +446,123 @@ public class AddInfo extends JFrame {
 
                     // Cài đặt kích thước cho cửa sổ JFrame
                     frame.setSize(screenWidth, screenHeight);
+                    frame.setResizable(false); // Không cho phép cửa sổ thu nhỏ hoặc phóng to
                     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
                     // Hiển thị cửa sổ JFrame
                     frame.setVisible(true);
+                    try {
+                        Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
+                        String sql = "SELECT * FROM informationcv WHERE id=?";
+                        PreparedStatement statement = conn.prepareStatement(sql);
+                        statement.setInt(1, userID); // Assuming 1 is the ID of the record you want to retrieve
+                        ResultSet resultSet = statement.executeQuery();
+
+                        if (resultSet.next()) {
+                            String name = resultSet.getString("FName") + " " + resultSet.getString("LName");
+                            String dob = resultSet.getDate("dob").toString();
+                            String address = resultSet.getString("Address");
+                            String postCode = resultSet.getString("phone");
+                            String nationality = resultSet.getString("nationality");
+                            String email = resultSet.getString("email");
+                            String university = resultSet.getString("university");
+                            String degree = resultSet.getString("degree");
+                            String skill1 = resultSet.getString("skill1");
+                            String skill2 = resultSet.getString("skill2");
+                            String skill3 = resultSet.getString("skill3");
+                            String experience = resultSet.getString("experience");
+
+                            // Update JLabels with retrieved data
+                            // Update the JLabels with retrieved data
+                            nameLabel.setText(name);
+                            nameLabel.setFont(new Font("Arial", Font.BOLD, 60));
+                            nameLabel.setForeground(Color.BLACK);
+                            nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+                            nameLabel.setBounds(650, 100, 400, 60);
+
+                            ageLabel.setText("Date of Birth: " + dob);
+                            ageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+                            ageLabel.setForeground(Color.BLACK);
+                            ageLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+                            ageLabel.setBounds(550, 400, 400, 30);
+
+                            addressLabel.setText(address);
+                            phoneLabel.setText(postCode);
+                            nationalityLabel.setText("Nation:" + nationality);
+                            emailLabel.setText(email);
+                            universityLabel.setText(university);
+                            skill1Label.setText("+" + skill1);
+                            skill2Label.setText("+" + skill2);
+                            skill3Label.setText("+" + skill3);
+                            degreeLabel.setText("+" + degree);
+                            experienceLabel.setText(experience);
+
+                            // Set avatar icon if available
+                            byte[] avatarData = resultSet.getBytes("avatar");
+                            if (avatarData != null && avatarData.length > 0) {
+                                ImageIcon avatarIcon = new ImageIcon(avatarData);
+                                if (avatarIcon != null) {
+                                    Image scaledImage = avatarIcon.getImage().getScaledInstance(avatarLabel.getWidth() * 2 + 35, avatarLabel.getHeight() * 2 - 15, Image.SCALE_SMOOTH);
+                                    ImageIcon scaledAvatarIcon = new ImageIcon(scaledImage);
+                                    avatarLabel.setIcon(scaledAvatarIcon);
+                                    avatarLabel.setBounds(avatarLabel.getX() + 111, avatarLabel.getY() - 175, avatarLabel.getWidth() * 2, avatarLabel.getHeight() * 2);
+                                } else {
+                                    System.out.println("Failed to create ImageIcon from avatarData");
+                                }
+                            } else {
+                                System.out.println("No avatar data found in ResultSet");
+                            }
+                            // Similarly, update other JLabels with their respective data
+                        } else {
+                            System.out.println("No data found for the specified ID");
+                        }
+
+                        conn.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
                 } catch (HeadlessException ex) {
                     throw new RuntimeException(ex);
                 }
+
+
             }
         });
 
         JButton printCVButton = new JButton("Print CV");
         add(printCVButton);
         printCVButton.setBounds(600, 450, 120, 30);
-        printCVButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    PrinterJob printerJob = PrinterJob.getPrinterJob();
-                    Printable printable = new Printable() {
-                        @Override
-                        public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-                            if (pageIndex > 0) {
-                                return Printable.NO_SUCH_PAGE;
-                            }
-                            Graphics2D g2d = (Graphics2D) graphics;
-                            g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-                            try {
-                                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvs", "root", "123456");
-                                String sql = "SELECT * FROM informationcv WHERE id=?";
-                                PreparedStatement statement = connection.prepareStatement(sql);
-                                statement.setInt(1, 1);
-                                ResultSet resultSet = statement.executeQuery();
-                                if (resultSet.next()) {
-                                    String fullName = resultSet.getString("FName") + " " + resultSet.getString("LName");
-                                    String dateOfBirth = resultSet.getString(   "dob");
-                                    String address = resultSet.getString("Address");
-                                    String postCode = resultSet.getString("post_code");
-                                    String nationality = resultSet.getString("nationality");
-                                    String email = resultSet.getString("email");
-                                    String university = resultSet.getString("university");
-                                    String degree = resultSet.getString("degree");
-                                    String skill1 = resultSet.getString("skill1");
-                                    String skill2 = resultSet.getString("skill2");
-                                    String skill3 = resultSet.getString("skill3");
-                                    String experience = resultSet.getString("experience");
-                                    double pageWidth = pageFormat.getImageableWidth();
-                                    double pageHeight = pageFormat.getImageableHeight();
-                                    Image background = Toolkit.getDefaultToolkit().getImage("icons/background.jpg"); // Đường dẫn đến hình ảnh mẫu
-                                    g2d.drawImage(background, 0, 0, (int) pageWidth, (int) pageHeight, null); // Vẽ hình ảnh mẫu
-                                    g2d.setColor(new Color(240, 240, 240));
-                                    g2d.fillRect(0, 0, (int) pageWidth, (int) pageHeight);
-                                    Font titleFont = new Font("Arial", Font.BOLD, 14);
-                                    Font normalFont = new Font("Arial", Font.PLAIN, 12);
-                                    g2d.setColor(Color.BLACK);
-                                    g2d.setFont(new Font("Arial", Font.BOLD, 16));
-                                    g2d.drawString("RESUME", 50, 30);
-                                    g2d.setFont(titleFont);
-                                    g2d.drawString("Personal Information", 50, 70);
-                                    g2d.setFont(normalFont);
-                                    g2d.drawString("Full Name: " + fullName, 50, 90);
-                                    g2d.drawString("Date of Birth: " + dateOfBirth, 50, 110);
-                                    g2d.drawString("Address: " + address, 50, 130);
-                                    g2d.drawString("Post Code: " + postCode, 50, 150);
-                                    g2d.drawString("Nationality: " + nationality, 50, 170);
-                                    g2d.drawString("Email: " + email, 50, 190);
-                                    g2d.setFont(titleFont);
-                                    g2d.drawString("Qualifications", 50, 230);
-                                    g2d.setFont(normalFont);
-                                    g2d.drawString("University: " + university, 50, 250);
-                                    g2d.drawString("Degree: " + degree, 50, 270);
-                                    g2d.drawString("Skills:", 50, 290);
-                                    g2d.drawString("- " + skill1, 50, 310);
-                                    g2d.drawString("- " + skill2, 50, 330);
-                                    g2d.drawString("- " + skill3, 50, 350);
-                                    g2d.drawString("Experience:", 50, 290);
-                                    if (imageData != null) {
-                                        Image image = new ImageIcon(imageData).getImage();
-                                        g2d.drawImage(image, 300, 70, 100, 100, null);
-                                    }
-                                }
-                                resultSet.close();
-                                statement.close();
-                                connection.close();
-                            } catch (SQLException ex) {
-                                System.err.println("Error fetching data from database: " + ex.getMessage());
-                            }
-                            return Printable.PAGE_EXISTS;
-                        }
-                    };
-                    PageFormat pageFormat = printerJob.defaultPage();
-                    if (printerJob.printDialog()) {
-                        printerJob.setPrintable(printable, pageFormat);
-                        printerJob.print();
-                    }
-                } catch (PrinterException ex) {
-                    System.err.println("Error printing CV: " + ex.getMessage());
-                }
-            }
-        });
+//        printCVButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                try {
+//                    String outputPath = "output/cv.pdf";
+//                    PdfWriter writer = new PdfWriter(outputPath);
+//                    PdfDocument pdfDoc = new PdfDocument(writer);
+//                    Document document = new Document(pdfDoc);
+//
+//                    BufferedImage bufferedImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
+//                    Graphics2D g2d = bufferedImage.createGraphics();
+//                    frame.paint(g2d);
+//                    g2d.dispose();
+//
+//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    ImageIO.write(bufferedImage, "png", baos);
+//                    ImageData imageData = ImageDataFactory.create(baos.toByteArray());
+//                    Image pdfImage = new Image(imageData);
+//                    pdfImage.setWidth(UnitValue.createPercentValue(100));
+//
+//                    document.add(pdfImage);
+//                    document.close();
+//
+//                    JOptionPane.showMessageDialog(frame, "PDF created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                    JOptionPane.showMessageDialog(frame, "Failed to create PDF.", "Error", JOptionPane.ERROR_MESSAGE);
+//                }
+//            }
+//        });
+//
+//
     }
-
     public static void main(String[] args) {
         new AddInfo();
     }

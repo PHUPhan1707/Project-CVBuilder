@@ -148,6 +148,7 @@ public class Login extends javax.swing.JFrame {
             }
         } catch (SQLException e) {
             showMessage(Message.MessageType.ERROR, "Error Register");
+            e.printStackTrace();
         }
     }
 
