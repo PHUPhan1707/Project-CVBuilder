@@ -23,7 +23,7 @@ public class DatabaseConnection {
     public void connectToDatabase() throws SQLException {
         String server = "127.0.0.1";
         String port = "3306";
-        String database = "cvs";
+        String database = "cvdata";
         String userName = "root";
         String password = "123456";
 

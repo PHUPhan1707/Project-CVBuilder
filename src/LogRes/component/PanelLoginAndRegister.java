@@ -175,7 +175,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         ResultSet rs = null;
         try {
             // Kết nối đến cơ sở dữ liệu của bạn
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvs", "root", "123456");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cvdata", "root", "123456");
 
             // Truy vấn kiểm tra thông tin người dùng
             String query = "SELECT * FROM user WHERE Email=? AND Password=?";

@@ -139,10 +139,10 @@ public class AddInfo extends JFrame {
 
         yPosition += gap;
 
-        JLabel postCodeLabel = new JLabel("Post Code:");
+        JLabel postCodeLabel = new JLabel("Phone:");
         postCodeLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
         add(postCodeLabel);
-        postCodeLabel.setBounds(50, yPosition, labelWidth, labelHeight);
+        postCodeLabel.setBounds(50, yPosition, labelWidth+20, labelHeight);
 
         JTextField postCodeField = new JTextField();
         add(postCodeField);
@@ -317,7 +317,6 @@ public class AddInfo extends JFrame {
                     ImageIcon icon = new ImageIcon(getClass().getResource("/icons/template1.jpg"));
 
 
-
                     // Tạo một JLabel để hiển thị hình ảnh
                     JLabel label = new JLabel(icon);
                     label.setHorizontalAlignment(JLabel.CENTER);
@@ -340,12 +339,82 @@ public class AddInfo extends JFrame {
                     label.add(nameLabel); // Thêm JLabel vào JLabel chứa hình ảnh
 
 // Tạo một JLabel để hiển thị tuổi
-                    JLabel ageLabel = new JLabel("Your Age");
+                    JLabel ageLabel = new JLabel("Your Brith Day");
                     ageLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Đặt font chữ và kích thước
                     ageLabel.setForeground(Color.WHITE); // Đặt màu chữ
                     ageLabel.setBounds(100, 150, 200, 30); // Đặt vị trí và kích thước
                     label.add(ageLabel); // Thêm JLabel vào JLabel chứa hình ảnh
 
+                    JLabel avatarLabel = new JLabel();
+                    avatarLabel.setHorizontalAlignment(JLabel.CENTER);
+                    avatarLabel.setVerticalAlignment(JLabel.CENTER);
+                    avatarLabel.setBounds(100, 200, 200, 200); // Đặt vị trí và kích thước cho avatar label
+                    label.add(avatarLabel);
+
+                    JLabel addressLabel = new JLabel("Address: ");
+                    addressLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+                    addressLabel.setForeground(Color.BLACK);
+                    addressLabel.setBounds(300, 650, 400, 30);
+                    label.add(addressLabel);
+
+                    JLabel phoneLabel = new JLabel("Phone: ");
+                    phoneLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+                    phoneLabel.setForeground(Color.BLACK);
+                    phoneLabel.setBounds(300, 605, 400, 30);
+                    label.add(phoneLabel);
+
+                    JLabel nationalityLabel = new JLabel("Nationality: ");
+                    nationalityLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+                    nationalityLabel.setForeground(Color.BLACK);
+                    nationalityLabel.setBounds(717, 450, 400, 30);
+                    label.add(nationalityLabel);
+
+                    JLabel emailLabel = new JLabel("Email: ");
+                    emailLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+                    emailLabel.setForeground(Color.BLACK);
+                    emailLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+                    emailLabel.setBounds(0, 690, 400, 30);
+                    label.add(emailLabel);
+
+                    JLabel universityLabel = new JLabel("University: ");
+                    universityLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+                    universityLabel.setForeground(Color.BLACK);
+                    universityLabel.setBounds(680, 610, 400, 30);
+                    label.add(universityLabel);
+
+                    JLabel degreeLabel = new JLabel("Degree: ");
+                    degreeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+                    degreeLabel.setForeground(Color.BLACK);
+                    degreeLabel.setBounds(680, 650, 400, 30);
+                    label.add(degreeLabel);
+
+                    JLabel skill1Label = new JLabel("Skill 1: ");
+                    skill1Label.setFont(new Font("Arial", Font.PLAIN, 15));
+                    skill1Label.setForeground(Color.BLACK);
+                    skill1Label.setHorizontalAlignment(SwingConstants.RIGHT);
+                    skill1Label.setBounds(550, 500, 400, 30);
+                    label.add(skill1Label);
+
+                    JLabel skill2Label = new JLabel("Skill 2: ");
+                    skill2Label.setFont(new Font("Arial", Font.PLAIN, 15));
+                    skill2Label.setForeground(Color.BLACK);
+                    skill2Label.setHorizontalAlignment(SwingConstants.RIGHT);
+                    skill2Label.setBounds(550, 550, 400, 30);
+                    label.add(skill2Label);
+
+                    JLabel skill3Label = new JLabel("Skill 3: ");
+                    skill3Label.setFont(new Font("Arial", Font.PLAIN, 15));
+                    skill3Label.setForeground(Color.BLACK);
+                    skill3Label.setHorizontalAlignment(SwingConstants.RIGHT);
+                    skill3Label.setBounds(550, 600, 400, 30);
+                    label.add(skill3Label);
+
+                    JLabel experienceLabel = new JLabel("Experience: ");
+                    experienceLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+                    experienceLabel.setForeground(Color.BLACK);
+                    experienceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+                    experienceLabel.setBounds(550, 650, 400, 30);
+                    label.add(experienceLabel);
 
                     // Tạo JScrollPane để chứa JLabel và tạo thanh cuộn khi cần
                     JScrollPane scrollPane = new JScrollPane(label);
@@ -354,7 +423,12 @@ public class AddInfo extends JFrame {
 
                     // Thêm JScrollPane vào cửa sổ JFrame
                     frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+                    JScrollPane scrollPane2= new JScrollPane(label);
+                    scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); // Đặt chế độ cuộn ngang
+                    scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
+// Thêm JScrollPane vào cửa sổ JFrame
+                    frame.getContentPane().add(scrollPane2, BorderLayout.CENTER);
                     // Lấy kích thước màn hình
                     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                     int screenWidth = (int) screenSize.getWidth();
@@ -362,13 +436,85 @@ public class AddInfo extends JFrame {
 
                     // Cài đặt kích thước cho cửa sổ JFrame
                     frame.setSize(screenWidth, screenHeight);
+                    frame.setResizable(false); // Không cho phép cửa sổ thu nhỏ hoặc phóng to
                     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
                     // Hiển thị cửa sổ JFrame
                     frame.setVisible(true);
+                    try {
+                        Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvs", "root", "123456");
+                        String sql = "SELECT * FROM informationcv WHERE id=?";
+                        PreparedStatement statement = conn.prepareStatement(sql);
+                        statement.setInt(1, userID); // Assuming 1 is the ID of the record you want to retrieve
+                        ResultSet resultSet = statement.executeQuery();
+
+                        if (resultSet.next()) {
+                            String name = resultSet.getString("FName") + " " + resultSet.getString("LName");
+                            String dob = resultSet.getDate("dob").toString();
+                            String address = resultSet.getString("Address");
+                            String postCode = resultSet.getString("post_code");
+                            String nationality = resultSet.getString("nationality");
+                            String email = resultSet.getString("email");
+                            String university = resultSet.getString("university");
+                            String degree = resultSet.getString("degree");
+                            String skill1 = resultSet.getString("skill1");
+                            String skill2 = resultSet.getString("skill2");
+                            String skill3 = resultSet.getString("skill3");
+                            String experience = resultSet.getString("experience");
+
+                            // Update JLabels with retrieved data
+                            // Update the JLabels with retrieved data
+                            nameLabel.setText(name);
+                            nameLabel.setFont(new Font("Arial", Font.BOLD, 60));
+                            nameLabel.setForeground(Color.BLACK);
+                            nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+                            nameLabel.setBounds(650, 100, 400, 60);
+
+                            ageLabel.setText("Date of Birth: " + dob);
+                            ageLabel.setFont(new Font("Arial",Font.PLAIN,20));
+                            ageLabel.setForeground(Color.BLACK);
+                            ageLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+                            ageLabel.setBounds(550, 400, 400, 30);
+
+                            addressLabel.setText(address);
+                            phoneLabel.setText(postCode);
+                            nationalityLabel.setText("Nation:"+nationality);
+                            emailLabel.setText(email);
+                            universityLabel.setText(university);
+                            skill1Label.setText(skill1);
+                            skill2Label.setText(skill2);
+                            skill3Label.setText(skill3);
+                            degreeLabel.setText(degree);
+                            experienceLabel.setText(experience);
+
+                            // Set avatar icon if available
+                            byte[] avatarData = resultSet.getBytes("avatar");
+                            if (avatarData != null && avatarData.length > 0) {
+                                ImageIcon avatarIcon = new ImageIcon(avatarData);
+                                if (avatarIcon != null) {
+                                    Image scaledImage = avatarIcon.getImage().getScaledInstance(avatarLabel.getWidth() * 2+35, avatarLabel.getHeight() *2-15, Image.SCALE_SMOOTH);
+                                    ImageIcon scaledAvatarIcon = new ImageIcon(scaledImage);
+                                    avatarLabel.setIcon(scaledAvatarIcon);
+                                    avatarLabel.setBounds(avatarLabel.getX() +111, avatarLabel.getY()-175, avatarLabel.getWidth() * 2, avatarLabel.getHeight() * 2);
+                                } else {
+                                    System.out.println("Failed to create ImageIcon from avatarData");
+                                }
+                            } else {
+                                System.out.println("No avatar data found in ResultSet");
+                            }
+                            // Similarly, update other JLabels with their respective data
+                        } else {
+                            System.out.println("No data found for the specified ID");
+                        }
+
+                        conn.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
                 } catch (HeadlessException ex) {
                     throw new RuntimeException(ex);
                 }
+
+
             }
         });
 
@@ -410,7 +556,7 @@ public class AddInfo extends JFrame {
                                     double pageHeight = pageFormat.getImageableHeight();
                                     Image background = Toolkit.getDefaultToolkit().getImage("icons/background.jpg"); // Đường dẫn đến hình ảnh mẫu
                                     g2d.drawImage(background, 0, 0, (int) pageWidth, (int) pageHeight, null); // Vẽ hình ảnh mẫu
-                                    g2d.setColor(new Color(240, 240, 240));
+                                    g2d.setColor(new Color(0, 0, 0));
                                     g2d.fillRect(0, 0, (int) pageWidth, (int) pageHeight);
                                     Font titleFont = new Font("Arial", Font.BOLD, 14);
                                     Font normalFont = new Font("Arial", Font.PLAIN, 12);
