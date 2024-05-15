@@ -6,10 +6,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.InputStream;
+import java.sql.*;
 
 public class CVHandler1 {
     private static final String CV_TEMPLATE_PATH = "png/CV_1 blank.png";
@@ -76,32 +74,99 @@ public class CVHandler1 {
         try (Connection connection = DatabaseConnector.connect();
              Statement statement = connection.createStatement()) {
 
-            // Execute SQL queries to fetch data and populate cvData object
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM information");
+            // Execute SQL query to fetch user information
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT information.FName, information.LName, information.Address, " +
+                            "information_phonenumber.PhoneNumber, information_email.Email, " +
+                            "information.AvatarPicture, major.MajorName, achievement.AchName, " +
+                            "hobbies.HobbName, education.EduName, workexperience.ExName " +
+                            "FROM information " +
+                            "LEFT JOIN information_phonenumber ON information.InfoID = information_phonenumber.InfoID " +
+                            "LEFT JOIN information_email ON information.InfoID = information_email.InfoID " +
+                            "LEFT JOIN major ON information.UserID = major.UserID " +
+                            "LEFT JOIN achievement ON information.UserID = achievement.UserID " +
+                            "LEFT JOIN hobbies ON information.UserID = hobbies.UserID " +
+                            "LEFT JOIN education ON information.UserID = education.UserID " +
+                            "LEFT JOIN workexperience ON information.UserID = workexperience.UserID"
+            );
+
             if (resultSet.next()) {
+                // Retrieve info from information table
                 cvData.setFullName(resultSet.getString("FName") + " " + resultSet.getString("LName"));
                 cvData.setAddress(resultSet.getString("Address"));
-                // Populate other fields similarly
-            } else { //Test info
-                // Generate random data if database returns null
-                cvData.setFullName(RandomDataGenerator.generateRandomString(10));
-                cvData.setAddress(RandomDataGenerator.generateRandomString(20));
+                cvData.setPhoneNumber(resultSet.getString("PhoneNumber"));
+                cvData.setEmail(resultSet.getString("Email"));
+                cvData.setMajor(resultSet.getString("MajorName"));
+                cvData.setAchievement(resultSet.getString("AchName"));
+                cvData.setHobby(resultSet.getString("HobbName"));
+                cvData.setEducation(resultSet.getString("EduName"));
+                cvData.setExperience(resultSet.getString("ExName"));
+
+                // Retrieve avatar picture
+                Blob avatarBlob = resultSet.getBlob("AvatarPicture");
+                if (avatarBlob != null) {
+                    try (InputStream inputStream = avatarBlob.getBinaryStream()) {
+                        BufferedImage avatarImage = ImageIO.read(inputStream);
+                        cvData.setAvatar(avatarImage); // Set avatar picture in CVData
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        // Handle the IOException
+                    }
+                }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            // Handle the SQLException
         }
 
         return cvData;
     }
 
+
     private void renderCVData(Graphics g, CVData cvData) {
         // Render CV data onto the template
 
         g.setFont(new Font("Arial", Font.BOLD, 12));
-        g.setColor(Color.BLACK);
-        g.drawString("Name: " + cvData.getFullName(), 60, 200);
-        g.drawString("Address: " + cvData.getAddress(), 100, 120);
-        // Render other fields similarly
+        // Render white text
+        g.setColor(Color.white);
+
+        g.drawString(cvData.getFullName(), 10, 200); //Name
+
+        g.drawString(cvData.getMajor(), 10, 100); // Major
+
+        g.drawString(cvData.getAddress(), 10, 300); //Address
+
+        String phoneNumber = cvData.getPhoneNumber() != null ? cvData.getPhoneNumber() : "Not Provided"; //phone
+        g.drawString(phoneNumber, 10, 400);
+
+        String email = cvData.getEmail() != null ? cvData.getEmail() : "Not Provided"; //email
+        g.drawString(email, 10, 500);
+
+        // Check if avatar image is available
+        BufferedImage avatarImage = cvData.getAvatar();
+        if (avatarImage != null) {
+            // Avatar image position
+            g.drawImage(avatarImage, 60, 60, null); // Adjust the position as needed
+        } else {
+            // If avatar image is not available, draw a square
+            g.setColor(Color.yellow);
+            g.fillRect(0, 0, 100, 100);
+        }
+        // Render in black text
+        g.setColor(Color.black);
+
+        String achievement = cvData.getAchievement() != null ? cvData.getAchievement() : "Not Provided";
+        g.drawString(achievement, 300, 200); // Achievement
+
+        String hobby = cvData.getHobby() != null ? cvData.getHobby() : "Not Provided";
+        g.drawString(hobby, 300, 300); // Hobby
+
+        String education = cvData.getEducation() != null ? cvData.getEducation() : "Not Provided";
+        g.drawString(education, 300, 400); // Education
+
+        String experience = cvData.getExperience() != null ? cvData.getExperience() : "Not Provided";
+        g.drawString(experience, 300, 500); // Experience
+
     }
 }

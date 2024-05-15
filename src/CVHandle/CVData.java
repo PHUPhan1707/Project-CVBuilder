@@ -1,5 +1,7 @@
 package CVHandle;
 
+import java.awt.image.BufferedImage;
+
 public class CVData {
     private String fullName;
     private String address;
@@ -10,6 +12,17 @@ public class CVData {
     private String education;
     private String hobby;
     private String achievement;
+    private BufferedImage avatar;
+    private String phoneNumber;
+    private String email;
+
+    public BufferedImage getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(BufferedImage avatar) {
+        this.avatar = avatar;
+    }
 
     public String getFullName() {
         return fullName;
@@ -26,6 +39,23 @@ public class CVData {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 
     public String getMajor() {
         return major;
@@ -51,13 +81,6 @@ public class CVData {
         this.experience = experience;
     }
 
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
 
     public String getEducation() {
         return education;
@@ -82,4 +105,5 @@ public class CVData {
     public void setAchievement(String achievement) {
         this.achievement = achievement;
     }
+
 }
