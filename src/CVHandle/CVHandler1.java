@@ -51,9 +51,9 @@ public class CVHandler1 {
         // Create a JFrame to display the CV
         JFrame frame = new JFrame("CV Viewer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(label); // Add the label directly to the frame
+        frame.getContentPane().add(label);
         frame.pack();
-        frame.setLocationRelativeTo(null); // Center the frame on the screen
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 //        frame.setResizable(false);
     }
