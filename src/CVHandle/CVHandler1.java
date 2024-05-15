@@ -164,53 +164,81 @@ public class CVHandler1 {
             g.fillRect(0, 0, 178, 164);
         }
 
-        // Render in black text
+
         g.setColor(Color.black);
 
-        int y = 613; // Starting y-coordinate for rendering achievements
-        for (int i = 0; i < Math.min(1, cvData.getAchievements().size()); i++) {
-            String achievement = cvData.getAchievements().get(i);
-            String achievementDescription = cvData.getAchievementDescriptions().get(i);
-            g.drawString("Achievement: " + achievement, 220, y); // Achievement
-            g.drawString("Description: " + achievementDescription, 220, y + 20); // Achievement Description
-            y += 40; // Move to the next entry
+        int y = 613; // Starting y-coordinate
+        if (cvData.getAchievements().isEmpty()) { // If achievements list is empty
+            g.drawString("Achievement: Not provided", 220, y);
+            g.drawString("Description: Not provided", 220, y + 20);
+        } else {
+            for (int i = 0; i < Math.min(1, cvData.getAchievements().size()); i++) { // maximum 1
+                String achievement = cvData.getAchievements().get(i);
+                String achievementDescription = cvData.getAchievementDescriptions().get(i);
+                g.drawString("Achievement: " + achievement, 220, y); // Achievement
+                g.drawString("Description: " + achievementDescription, 220, y + 20); // Achievement Description
+                y += 40; // Move to the next entry
+            }
         }
 
         // Render hobbies
-        y = 685; // Starting y-coordinate for rendering hobbies
-        for (int i = 0; i < Math.min(1, cvData.getHobbies().size()); i++) {
-            String hobby = cvData.getHobbies().get(i);
-            String hobbyDescription = cvData.getHobbyDescriptions().get(i);
-            g.drawString("Hobby: " + hobby, 220, y); // Hobby
-            g.drawString("Description: " + hobbyDescription, 220, y + 20); // Hobby Description
-            y += 40; // Move to the next entry
+        y = 685; // Starting y-coordinate
+        if (cvData.getHobbies().isEmpty()) { // If hobbies list is empty
+            g.drawString("Hobby: Not provided", 220, y);
+            g.drawString("Description: Not provided", 220, y + 20);
+        } else {
+            for (int i = 0; i < Math.min(1, cvData.getHobbies().size()); i++) { // maximum 1
+                String hobby = cvData.getHobbies().get(i);
+                String hobbyDescription = cvData.getHobbyDescriptions().get(i);
+                g.drawString("Hobby: " + hobby, 220, y); // Hobby
+                g.drawString("Description: " + hobbyDescription, 220, y + 20); // Hobby Description
+                y += 40; // Move to the next entry
+            }
         }
 
         // Render education
-        y = 275; // Starting y-coordinate for rendering education
-        for (int i = 0; i < Math.min(3, cvData.getEducation().size()); i++) {
+        y = 275; // Starting y-coordinate
+        for (int i = 0; i < Math.min(3, cvData.getEducation().size()); i++) { // maximum 3
             String education = cvData.getEducation().get(i);
             String educationDescription = cvData.getEducationDescriptions().get(i);
+            if (education == null || education.isEmpty()) {
+                education = "Not provided";
+            }
+            if (educationDescription == null || educationDescription.isEmpty()) {
+                educationDescription = "Not provided";
+            }
             g.drawString("Education: " + education, 220, y); // Education
             g.drawString("Description: " + educationDescription, 220, y + 15); // Education Description
             y += 40; // Move to the next entry
         }
 
         // Render experiences
-        y = 60; // Starting y-coordinate for rendering experiences
-        for (int i = 0; i < Math.min(3, cvData.getExperiences().size()); i++) {
+        y = 60; // Starting y-coordinate
+        for (int i = 0; i < Math.min(3, cvData.getExperiences().size()); i++) { // maximum 3
             String experience = cvData.getExperiences().get(i);
             String experienceDescription = cvData.getExperienceDescriptions().get(i);
+            if (experience == null || experience.isEmpty()) {
+                experience = "Not provided";
+            }
+            if (experienceDescription == null || experienceDescription.isEmpty()) {
+                experienceDescription = "Not provided";
+            }
             g.drawString("Experience: " + experience, 220, y); // Experience
             g.drawString("Description: " + experienceDescription, 220, y + 15); // Experience Description
             y += 40; // Move to the next entry
         }
 
         // Render skills
-        y = 475; // Starting y-coordinate for rendering skills
-        for (int i = 0; i < Math.min(3, cvData.getSkills().size()); i++) { //maximum skill
+        y = 475; // Starting y-coordinate
+        for (int i = 0; i < Math.min(3, cvData.getSkills().size()); i++) { // maximum 3
             String skill = cvData.getSkills().get(i);
             String skillDescription = cvData.getSkillDescriptions().get(i);
+            if (skill == null || skill.isEmpty()) {
+                skill = "Not provided";
+            }
+            if (skillDescription == null || skillDescription.isEmpty()) {
+                skillDescription = "Not provided";
+            }
             g.drawString("Skill: " + skill, 220, y); // Skill
             g.drawString("Description: " + skillDescription, 220, y + 15); // Skill Description
             y += 35; // Move to the next entry
