@@ -180,28 +180,28 @@ public class CVHandler1 {
 
         String achievement = cvData.getAchievement() != null ? cvData.getAchievement() : "Achieve Name Not Provided";
         String achievementDescription = cvData.getAchievementDescription() != null ? cvData.getAchievementDescription() : "Achieve Description Not Provided";
-        g.drawString("Achie: " + achievement, 220, 200); // Achievement
-        g.drawString("Description: " + achievementDescription, 220, 220); // Achievement Description
+        g.drawString("Achie: " + achievement, 220, 613); // Achievement
+        g.drawString("Description: " + achievementDescription, 220, 633); // Achievement Description
 
         String hobby = cvData.getHobby() != null ? cvData.getHobby() : "Hobby Name Not Provided";
         String hobbyDescription = cvData.getHobbyDescription() != null ? cvData.getHobbyDescription() : "Hobby Description Not Provided";
-        g.drawString("Hobby: " + hobby, 220, 300); // Hobby
-        g.drawString("Description: " + hobbyDescription, 220, 320); // Hobby Description
+        g.drawString("Hobby: " + hobby, 220, 685); // Hobby
+        g.drawString("Description: " + hobbyDescription, 220, 705); // Hobby Description
 
         String education = cvData.getEducation() != null ? cvData.getEducation() : "Edu Name Not Provided";
         String educationDescription = cvData.getEducationDescription() != null ? cvData.getEducationDescription() : "Edu Description Not Provided";
-        g.drawString("Edu: " + education, 220, 400); // Education
-        g.drawString("Description: " + educationDescription, 220, 420); // Education Description
+        g.drawString("Edu: " + education, 220, 270); // Education
+        g.drawString("Description: " + educationDescription, 220, 290); // Education Description
 
         String experience = cvData.getExperience() != null ? cvData.getExperience() : "Exp Name Not Provided";
         String experienceDescription = cvData.getExperienceDescription() != null ? cvData.getExperienceDescription() : "Exp Description Not Provided";
-        g.drawString("Exp: " + experience, 220, 500); // Experience
-        g.drawString("Description: " + experienceDescription, 220, 520); // Experience Description
+        g.drawString("Exp: " + experience, 220, 60); // Experience
+        g.drawString("Description: " + experienceDescription, 220, 80); // Experience Description
 
         String skillName = cvData.getSkillName() != null ? cvData.getSkillName() : "Skill Name Not Provided";
         String skillDescription = cvData.getSkillDescription() != null ? cvData.getSkillDescription() : "Skill Description Not Provided";
-        g.drawString("Skill: " + skillName, 220, 600);
-        g.drawString("Description: " + skillDescription, 220, 620);
+        g.drawString("Skill: " + skillName, 220, 480);
+        g.drawString("Description: " + skillDescription, 220, 500);
 
     }
 }
