@@ -37,7 +37,7 @@ public class CVHandler1 {
         g.drawImage(scaledImage, 0, 0, null);
 
         // Fetch the CV data from the database
-        CVData cvData = fetchCVData(cvTemplate);
+        CVData cvData = fetchCVData();
 
         // Render the CV data onto the combined image
         renderCVData(g, cvData);
@@ -55,7 +55,6 @@ public class CVHandler1 {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-//        frame.setResizable(false);
     }
 
     private BufferedImage scaleImage(BufferedImage originalImage, int maxWidth, int maxHeight) {
@@ -71,7 +70,7 @@ public class CVHandler1 {
         return scaledImage;
     }
 
-    private CVData fetchCVData(BufferedImage cvTemplate) {
+    private CVData fetchCVData() {
         CVData cvData = new CVData();
 
         // Fetch data from the database and populate cvData object
@@ -81,7 +80,8 @@ public class CVHandler1 {
             // Execute SQL query to fetch user information
             ResultSet resultSet = statement.executeQuery(
                     "SELECT FName, LName, Address, PhoneNumber, Email, AvatarPicture, MajorName, " +
-                            "AchName, AchiDescription, HobbName, HobbDescription, EduName, EduDescription, ExName, ExDescription, SkillName, SkillDescription FROM information " +
+                            "AchName, AchiDescription, HobbName, HobbDescription, EduName, EduDescription, " +
+                            "ExName, ExDescription, SkillName, SkillDescription FROM information " +
 
                             "LEFT JOIN information_phonenumber ON information.InfoID = information_phonenumber.InfoID " +
                             "LEFT JOIN information_email ON information.InfoID = information_email.InfoID " +
@@ -93,7 +93,7 @@ public class CVHandler1 {
                             "LEFT JOIN skill ON information.UserID = skill.UserID"
             );
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 // Retrieve info from information table
                 cvData.setFullName(resultSet.getString("FName") + " " + resultSet.getString("LName"));
 
@@ -103,20 +103,11 @@ public class CVHandler1 {
 
                 cvData.setMajor(resultSet.getString("MajorName"));
 
-                cvData.setAchievement(resultSet.getString("AchName"));
-                cvData.setAchievementDescription(resultSet.getString("AchiDescription"));
-
-                cvData.setHobby(resultSet.getString("HobbName"));
-                cvData.setHobbyDescription(resultSet.getString("HobbDescription"));
-
-                cvData.setEducation(resultSet.getString("EduName"));
-                cvData.setEducationDescription(resultSet.getString("EduDescription"));
-
-                cvData.setExperience(resultSet.getString("ExName"));
-                cvData.setExperienceDescription(resultSet.getString("ExDescription"));
-
-                cvData.setSkillName(resultSet.getString("SkillName"));
-                cvData.setSkillDescription(resultSet.getString("SkillDescription"));
+                cvData.addAchievement(resultSet.getString("AchName"), resultSet.getString("AchiDescription"));
+                cvData.addHobby(resultSet.getString("HobbName"), resultSet.getString("HobbDescription"));
+                cvData.addEducation(resultSet.getString("EduName"), resultSet.getString("EduDescription"));
+                cvData.addExperience(resultSet.getString("ExName"), resultSet.getString("ExDescription"));
+                cvData.addSkill(resultSet.getString("SkillName"), resultSet.getString("SkillDescription"));
 
                 // Retrieve avatar picture
                 Blob avatarBlob = resultSet.getBlob("AvatarPicture");
@@ -145,13 +136,12 @@ public class CVHandler1 {
 
         g.setFont(new Font("Arial", Font.BOLD, 25));
         g.setColor(Color.white);
-        g.drawString(cvData.getFullName(), 10, 200); //Name
-
+        String fullName = cvData.getFullName() != null ? cvData.getFullName() : "Name Not Provided"; //Name
+        g.drawString(fullName, 10, 200);
 
         Font majorFont = new Font("Arial", Font.PLAIN, 15);
         g.setFont(majorFont);
-        g.drawString(cvData.getMajor(), 30, 235); // Major
-
+        g.drawString(cvData.getMajor(), 45, 235); // Major
 
         g.setFont(new Font("Arial", Font.PLAIN, 10));
         g.setColor(Color.white);
@@ -174,34 +164,56 @@ public class CVHandler1 {
             g.fillRect(0, 0, 178, 164);
         }
 
-
         // Render in black text
         g.setColor(Color.black);
 
-        String achievement = cvData.getAchievement() != null ? cvData.getAchievement() : "Achieve Name Not Provided";
-        String achievementDescription = cvData.getAchievementDescription() != null ? cvData.getAchievementDescription() : "Achieve Description Not Provided";
-        g.drawString("Achie: " + achievement, 220, 613); // Achievement
-        g.drawString("Description: " + achievementDescription, 220, 633); // Achievement Description
+        int y = 613; // Starting y-coordinate for rendering achievements
+        for (int i = 0; i < Math.min(1, cvData.getAchievements().size()); i++) {
+            String achievement = cvData.getAchievements().get(i);
+            String achievementDescription = cvData.getAchievementDescriptions().get(i);
+            g.drawString("Achievement: " + achievement, 220, y); // Achievement
+            g.drawString("Description: " + achievementDescription, 220, y + 20); // Achievement Description
+            y += 40; // Move to the next entry
+        }
 
-        String hobby = cvData.getHobby() != null ? cvData.getHobby() : "Hobby Name Not Provided";
-        String hobbyDescription = cvData.getHobbyDescription() != null ? cvData.getHobbyDescription() : "Hobby Description Not Provided";
-        g.drawString("Hobby: " + hobby, 220, 685); // Hobby
-        g.drawString("Description: " + hobbyDescription, 220, 705); // Hobby Description
+        // Render hobbies
+        y = 685; // Starting y-coordinate for rendering hobbies
+        for (int i = 0; i < Math.min(1, cvData.getHobbies().size()); i++) {
+            String hobby = cvData.getHobbies().get(i);
+            String hobbyDescription = cvData.getHobbyDescriptions().get(i);
+            g.drawString("Hobby: " + hobby, 220, y); // Hobby
+            g.drawString("Description: " + hobbyDescription, 220, y + 20); // Hobby Description
+            y += 40; // Move to the next entry
+        }
 
-        String education = cvData.getEducation() != null ? cvData.getEducation() : "Edu Name Not Provided";
-        String educationDescription = cvData.getEducationDescription() != null ? cvData.getEducationDescription() : "Edu Description Not Provided";
-        g.drawString("Edu: " + education, 220, 270); // Education
-        g.drawString("Description: " + educationDescription, 220, 290); // Education Description
+        // Render education
+        y = 275; // Starting y-coordinate for rendering education
+        for (int i = 0; i < Math.min(3, cvData.getEducation().size()); i++) {
+            String education = cvData.getEducation().get(i);
+            String educationDescription = cvData.getEducationDescriptions().get(i);
+            g.drawString("Education: " + education, 220, y); // Education
+            g.drawString("Description: " + educationDescription, 220, y + 15); // Education Description
+            y += 40; // Move to the next entry
+        }
 
-        String experience = cvData.getExperience() != null ? cvData.getExperience() : "Exp Name Not Provided";
-        String experienceDescription = cvData.getExperienceDescription() != null ? cvData.getExperienceDescription() : "Exp Description Not Provided";
-        g.drawString("Exp: " + experience, 220, 60); // Experience
-        g.drawString("Description: " + experienceDescription, 220, 80); // Experience Description
+        // Render experiences
+        y = 60; // Starting y-coordinate for rendering experiences
+        for (int i = 0; i < Math.min(3, cvData.getExperiences().size()); i++) {
+            String experience = cvData.getExperiences().get(i);
+            String experienceDescription = cvData.getExperienceDescriptions().get(i);
+            g.drawString("Experience: " + experience, 220, y); // Experience
+            g.drawString("Description: " + experienceDescription, 220, y + 15); // Experience Description
+            y += 40; // Move to the next entry
+        }
 
-        String skillName = cvData.getSkillName() != null ? cvData.getSkillName() : "Skill Name Not Provided";
-        String skillDescription = cvData.getSkillDescription() != null ? cvData.getSkillDescription() : "Skill Description Not Provided";
-        g.drawString("Skill: " + skillName, 220, 480);
-        g.drawString("Description: " + skillDescription, 220, 500);
-
+        // Render skills
+        y = 475; // Starting y-coordinate for rendering skills
+        for (int i = 0; i < Math.min(3, cvData.getSkills().size()); i++) { //maximum skill
+            String skill = cvData.getSkills().get(i);
+            String skillDescription = cvData.getSkillDescriptions().get(i);
+            g.drawString("Skill: " + skill, 220, y); // Skill
+            g.drawString("Description: " + skillDescription, 220, y + 15); // Skill Description
+            y += 35; // Move to the next entry
+        }
     }
 }

@@ -1,32 +1,41 @@
 package CVHandle;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CVData {
     private String fullName;
     private String address;
-    private String major;
-    private String skillName;
-    private String skillDescription;
-    private String hobbyDescription;
-    private String educationDescription;
-    private String experienceDescription;
-    private String achievementDescription;
-    private String experience;
-    private String education;
-    private String hobby;
-    private String achievement;
-    private BufferedImage avatar;
     private String phoneNumber;
     private String email;
+    private String major;
+    private BufferedImage avatar;
+    private List<String> achievements;
+    private List<String> achievementDescriptions;
+    private List<String> hobbies;
+    private List<String> hobbyDescriptions;
+    private List<String> education;
+    private List<String> educationDescriptions;
+    private List<String> experiences;
+    private List<String> experienceDescriptions;
+    private List<String> skills;
+    private List<String> skillDescriptions;
 
-    public BufferedImage getAvatar() {
-        return avatar;
+    public CVData() {
+        achievements = new ArrayList<>();
+        achievementDescriptions = new ArrayList<>();
+        hobbies = new ArrayList<>();
+        hobbyDescriptions = new ArrayList<>();
+        education = new ArrayList<>();
+        educationDescriptions = new ArrayList<>();
+        experiences = new ArrayList<>();
+        experienceDescriptions = new ArrayList<>();
+        skills = new ArrayList<>();
+        skillDescriptions = new ArrayList<>();
     }
 
-    public void setAvatar(BufferedImage avatar) {
-        this.avatar = avatar;
-    }
+    // Getters and setters
 
     public String getFullName() {
         return fullName;
@@ -60,7 +69,6 @@ public class CVData {
         this.email = email;
     }
 
-
     public String getMajor() {
         return major;
     }
@@ -68,88 +76,77 @@ public class CVData {
     public void setMajor(String major) {
         this.major = major;
     }
-    // Getters and setters for skill data
-    public String getSkillName() {
-        return skillName;
+
+    public BufferedImage getAvatar() {
+        return avatar;
     }
 
-    public void setSkillName(String skillName) {
-        this.skillName = skillName;
+    public void setAvatar(BufferedImage avatar) {
+        this.avatar = avatar;
     }
 
-    public String getSkillDescription() {
-        return skillDescription;
+    public List<String> getAchievements() {
+        return achievements;
     }
 
-    public void setSkillDescription(String skillDescription) {
-        this.skillDescription = skillDescription;
+    public void addAchievement(String achievement, String description) {
+        achievements.add(achievement);
+        achievementDescriptions.add(description);
     }
 
-    public String getExperience() {
-        return experience;
+    public List<String> getHobbies() {
+        return hobbies;
     }
 
-    public void setExperience(String experience) {
-        this.experience = experience;
+    public void addHobby(String hobby, String description) {
+        hobbies.add(hobby);
+        hobbyDescriptions.add(description);
     }
 
-    public String getExperienceDescription() {
-        return experienceDescription;
-    }
-
-    public void setExperienceDescription(String experienceDescription) {
-        this.experienceDescription = experienceDescription;
-    }
-
-
-
-    public String getEducation() {
+    public List<String> getEducation() {
         return education;
     }
 
-    public void setEducation(String education) {
-        this.education = education;
+    public void addEducation(String education, String description) {
+        this.education.add(education);
+        educationDescriptions.add(description);
     }
 
-    public String getEducationDescription() {
-        return educationDescription;
+    public List<String> getExperiences() {
+        return experiences;
     }
 
-    public void setEducationDescription(String educationDescription) {
-        this.educationDescription = educationDescription;
+    public void addExperience(String experience, String description) {
+        experiences.add(experience);
+        experienceDescriptions.add(description);
     }
 
-
-    public String getHobby() {
-        return hobby;
+    public List<String> getSkills() {
+        return skills;
     }
 
-    public void setHobby(String hobby) {
-        this.hobby = hobby;
+    public void addSkill(String skill, String description) {
+        skills.add(skill);
+        skillDescriptions.add(description);
     }
 
-    public String getHobbyDescription() {
-        return hobbyDescription;
+    public List<String> getAchievementDescriptions() {
+        return achievementDescriptions;
     }
 
-    public void setHobbyDescription(String hobbyDescription) {
-        this.hobbyDescription = hobbyDescription;
+    public List<String> getHobbyDescriptions() {
+        return hobbyDescriptions;
     }
 
-    public String getAchievement() {
-        return achievement;
+    public List<String> getEducationDescriptions() {
+        return educationDescriptions;
     }
 
-    public void setAchievement(String achievement) {
-        this.achievement = achievement;
+    public List<String> getExperienceDescriptions() {
+        return experienceDescriptions;
     }
 
-    public String getAchievementDescription() {
-        return achievementDescription;
+    public List<String> getSkillDescriptions() {
+        return skillDescriptions;
     }
-
-    public void setAchievementDescription(String achievementDescription) {
-        this.achievementDescription = achievementDescription;
-    }
-
 }
