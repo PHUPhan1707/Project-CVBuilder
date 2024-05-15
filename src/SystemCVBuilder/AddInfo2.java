@@ -3,39 +3,27 @@ package SystemCVBuilder;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import com.itextpdf.awt.geom.AffineTransform;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfDocument;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.image.BufferedImage;
-
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.ByteArrayOutputStream;
 import java.sql.*;
 
 import java.io.*;
 
-public class AddInfo extends JFrame {
+public class AddInfo2 extends JFrame {
     private JLabel avatarLabel;
     private JButton uploadButton;
     private String imagePath;
     private byte[] imageData;
-    private int UserID;
+    private int userID;
 
     private JFrame frame;
 
-    public AddInfo() {
+    public AddInfo2() {
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 
@@ -277,77 +265,47 @@ public class AddInfo extends JFrame {
 
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Connection conn = null;
-                PreparedStatement statementUser = null;
-                PreparedStatement statementCV = null;
-                ResultSet resultSet = null;
-
                 try {
-                    conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
-                    conn.setAutoCommit(false);  // Start transaction
-
-                    // Step 1: Insert into user table
-                    String sqlUser = "INSERT INTO user (email) VALUES (?)";
-                    statementUser = conn.prepareStatement(sqlUser, Statement.RETURN_GENERATED_KEYS);
-                    statementUser.setString(1, emailField.getText());
-                    statementUser.executeUpdate();
-
-                    resultSet = statementUser.getGeneratedKeys();
-                    int newUserId = 0;
-                    if (resultSet.next()) {
-                        newUserId = resultSet.getInt(1);
-                    } else {
-                        throw new SQLException("Failed to retrieve user_ID.");
-                    }
-
-                    // Step 2: Insert into informationcv table
-                    String sqlCV = "INSERT INTO informationcv (FName, LName, dob, Address, phone, nationality, email, university, degree, skill1, skill2, skill3, experience, avatar, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    statementCV = conn.prepareStatement(sqlCV);
-                    statementCV.setString(1, tfFirstName.getText());
-                    statementCV.setString(2, tfLastName.getText());
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
+                    String sql = "INSERT INTO informationcv (FName, LName, dob, Address, phone, nationality, email, university, degree, skill1, skill2, skill3, experience, avatar) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+                    PreparedStatement statement = conn.prepareStatement(sql);
+                    statement.setString(1, tfFirstName.getText());
+                    statement.setString(2, tfLastName.getText());
                     java.sql.Date dob = new java.sql.Date(tfdob.getDate().getTime());
-                    statementCV.setDate(3, dob);
-                    statementCV.setString(4, address1Field.getText());
-                    statementCV.setString(5, postCodeField.getText());
-                    statementCV.setString(6, nationalityField.getText());
-                    statementCV.setString(7, emailField.getText());
-                    statementCV.setString(8, universityField.getText());
-                    statementCV.setString(9, degreeField.getText());
-                    statementCV.setString(10, skillsField1.getText());
-                    statementCV.setString(11, skillsField2.getText());
-                    statementCV.setString(12, skillsField3.getText());
-                    statementCV.setString(13, experienceField.getText());
-                    statementCV.setBytes(14, imageData);
-                    statementCV.setInt(15, newUserId);  // Use the retrieved user_ID
-
-                    int rowsInserted = statementCV.executeUpdate();
+                    statement.setDate(3, dob);
+                    statement.setString(4, address1Field.getText());
+                    statement.setString(5, postCodeField.getText());
+                    statement.setString(6, nationalityField.getText());
+                    statement.setString(7, emailField.getText());
+                    statement.setString(8, universityField.getText());
+                    statement.setString(9, degreeField.getText());
+                    statement.setString(10, skillsField1.getText());
+                    statement.setString(11, skillsField2.getText());
+                    statement.setString(12, skillsField3.getText());
+                    statement.setString(13, experienceField.getText());
+                    statement.setBytes(14, imageData);
+                    int rowsInserted = statement.executeUpdate();
                     if (rowsInserted > 0) {
                         System.out.println("Thông tin đã được lưu vào cơ sở dữ liệu!");
-                    }
-
-                    conn.commit();  // Commit transaction
-
-                } catch (SQLException ex) {
-                    if (conn != null) {
                         try {
-                            conn.rollback();  // Rollback transaction on error
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
+                            Connection connGetID = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
+                            String sqlGetID = "SELECT LAST_INSERT_ID()";
+                            PreparedStatement statementGetID = conn.prepareStatement(sqlGetID);
+                            ResultSet resultSet = statementGetID.executeQuery();
+                            if (resultSet.next()) {
+                                userID = resultSet.getInt(1);
+                            }
+                            conn.close();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
                         }
                     }
+                    conn.close();
+                } catch (SQLException ex) {
                     ex.printStackTrace();
-                } finally {
-                    try {
-                        if (resultSet != null) resultSet.close();
-                        if (statementUser != null) statementUser.close();
-                        if (statementCV != null) statementCV.close();
-                        if (conn != null) conn.close();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
                 }
             }
-});
+        });
 
         JButton exportPDFButton = new JButton("Export PDF");
         add(exportPDFButton);
@@ -360,7 +318,7 @@ public class AddInfo extends JFrame {
                     frame.setLayout(new BorderLayout());
 
                     // Tạo một ImageIcon từ tệp hình ảnh
-                    ImageIcon icon = new ImageIcon(getClass().getResource("/icons/template1.jpg"));
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/icons/template2.jpg"));
 
 
                     // Tạo một JLabel để hiển thị hình ảnh
@@ -400,19 +358,19 @@ public class AddInfo extends JFrame {
                     JLabel addressLabel = new JLabel("Address: ");
                     addressLabel.setFont(new Font("Arial", Font.PLAIN, 23));
                     addressLabel.setForeground(Color.BLACK);
-                    addressLabel.setBounds(300, 650, 400, 30);
+                    addressLabel.setBounds(300, 480, 400, 30);
                     label.add(addressLabel);
 
                     JLabel phoneLabel = new JLabel("Phone: ");
                     phoneLabel.setFont(new Font("Arial", Font.PLAIN, 23));
                     phoneLabel.setForeground(Color.BLACK);
-                    phoneLabel.setBounds(300, 605, 400, 30);
+                    phoneLabel.setBounds(300, 535, 400, 30);
                     label.add(phoneLabel);
 
                     JLabel nationalityLabel = new JLabel("Nationality: ");
                     nationalityLabel.setFont(new Font("Arial", Font.PLAIN, 23));
                     nationalityLabel.setForeground(Color.BLACK);
-                    nationalityLabel.setBounds(725, 450, 400, 30);
+                    nationalityLabel.setBounds(695, 450, 400, 30);
                     label.add(nationalityLabel);
 
                     JLabel emailLabel = new JLabel("Email: ");
@@ -520,11 +478,11 @@ public class AddInfo extends JFrame {
                     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     // Hiển thị cửa sổ JFrame
                     frame.setVisible(true);
-                    try {// layas từ data nè 2 cái
+                    try {
                         Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
                         String sql = "SELECT * FROM informationcv WHERE id=?";
                         PreparedStatement statement = conn.prepareStatement(sql);
-                        statement.setInt(1, UserID); // Assuming 1 is the ID of the record you want to retrieve
+                        statement.setInt(1, userID); // Assuming 1 is the ID of the record you want to retrieve
                         ResultSet resultSet = statement.executeQuery();
 
                         if (resultSet.next()) {
@@ -553,7 +511,7 @@ public class AddInfo extends JFrame {
                             ageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
                             ageLabel.setForeground(Color.BLACK);
                             ageLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-                            ageLabel.setBounds(550, 400, 400, 30);
+                            ageLabel.setBounds(520, 370, 400, 30);
 
                             addressLabel.setText(address);
                             phoneLabel.setText(postCode);
@@ -571,7 +529,7 @@ public class AddInfo extends JFrame {
                             if (avatarData != null && avatarData.length > 0) {
                                 ImageIcon avatarIcon = new ImageIcon(avatarData);
                                 if (avatarIcon != null) {
-                                    Image scaledImage = avatarIcon.getImage().getScaledInstance(avatarLabel.getWidth() * 2 + 35, avatarLabel.getHeight() * 2 - 15, Image.SCALE_SMOOTH);
+                                    Image scaledImage = avatarIcon.getImage().getScaledInstance(avatarLabel.getWidth() , avatarLabel.getHeight() , Image.SCALE_SMOOTH);
                                     ImageIcon scaledAvatarIcon = new ImageIcon(scaledImage);
                                     avatarLabel.setIcon(scaledAvatarIcon);
                                     avatarLabel.setBounds(avatarLabel.getX() + 111, avatarLabel.getY() - 175, avatarLabel.getWidth() * 2, avatarLabel.getHeight() * 2);
@@ -601,7 +559,7 @@ public class AddInfo extends JFrame {
 
     }
     public static void main(String[] args) {
-        new AddInfo();
+        new AddInfo2();
     }
 
 }

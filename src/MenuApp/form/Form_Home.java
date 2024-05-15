@@ -4,7 +4,12 @@ import MenuApp.component.Card;
 import MenuApp.model.Model_Card;
 import MenuApp.swing.ScrollBar;
 import MenuApp.swing.WrapLayout;
+import SystemCVBuilder.AddInfo;
+import SystemCVBuilder.AddInfo2;
+
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Form_Home extends javax.swing.JPanel {
 
@@ -16,9 +21,47 @@ public class Form_Home extends javax.swing.JPanel {
     private void init() {
         panel.setLayout(new WrapLayout(WrapLayout.LEADING));
         jScrollPane1.setVerticalScrollBar(new ScrollBar());
-        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/1.jpg")), "Lean Java UI", "Leaning java\nswing ui design\nlike and Subscribe\nthank for watch")));
-        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/2.jpg")), "Lean Java UI", "Leaning java\nswing ui design\nlike and Subscribe\nthank for watch")));
-        panel.add(new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/3.jpg")), "Lean Java UI", "Leaning java\nswing ui design\nlike and Subscribe\nthank for watch")));
+
+        // Tạo và thêm card 1
+        Card card1 = new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/cv1.jpg")), "Minimal Redish Template", "A minimal redish template\nthat can show your\ncreativity and enthusiasm\namong others"));
+        panel.add(card1);
+
+        // Thêm sự kiện cho card 1
+        card1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Thực hiện hành động khi nhấp vào card 1
+                AddInfo addInfo = new AddInfo();
+                addInfo.setVisible(true);
+            }
+        });
+
+        // Tạo và thêm card 2
+        Card card2 = new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/cv2.jpg")),  "Minimal Bluish Template", "A minimal blueish template\nthat is suitable for\nmaking the readers\nfeel strongly immersed"));
+        panel.add(card2);
+
+        // Thêm sự kiện cho card 2
+        card2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Thực hiện hành động khi nhấp vào card 2
+                AddInfo2 addInfo2 = new AddInfo2();
+                addInfo2.setVisible(true);
+            }
+        });
+
+        // Tạo và thêm card 3
+        Card card3 = new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/cv3.jpg")), "Black & White Template", "A minimal black and white template\nthat can make\nreaders to feel more comfortable\nand easier to keep track"));
+        panel.add(card3);
+
+        // Thêm sự kiện cho card 3 (nếu cần)
+        // card3.addMouseListener(new MouseAdapter() {
+        //     @Override
+        //     public void mouseClicked(MouseEvent e) {
+        //         // Thực hiện hành động khi nhấp vào card 3
+        //     }
+        // });
+
         panel.revalidate();
         panel.repaint();
     }
