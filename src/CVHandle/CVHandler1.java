@@ -24,26 +24,29 @@ public class CVHandler1 {
             return;
         }
 
-        // Scale the image to fit the screen while preserving aspect ratio
+        // Scale the cv img
         BufferedImage scaledImage = scaleImage(cvTemplate, MAX_WIDTH, MAX_HEIGHT);
 
-        // Create a JLabel to hold the scaled image
-        JLabel label = new JLabel(new ImageIcon(scaledImage));
+        // Create a BufferedImage to hold the combined image
+        BufferedImage combinedImage = new BufferedImage(MAX_WIDTH, MAX_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
-        // Create a JPanel to render the CV data
-        JPanel cvDataPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Render CV data onto the panel
-                renderCVData((Graphics2D) g, fetchCVData(cvTemplate));
-            }
-        };
-        cvDataPanel.setOpaque(false); // Make the panel transparent
+        // Create a Graphics object to draw onto the combined image
+        Graphics2D g = combinedImage.createGraphics();
 
-        // Add the cvDataPanel on top of the label
-        label.setLayout(new OverlayLayout(label));
-        label.add(cvDataPanel);
+        // Draw the scaled CV template image onto the combined image
+        g.drawImage(scaledImage, 0, 0, null);
+
+        // Fetch the CV data from the database
+        CVData cvData = fetchCVData(cvTemplate);
+
+        // Render the CV data onto the combined image
+        renderCVData(g, cvData);
+
+        // Dispose the Graphics object
+        g.dispose();
+
+        // Create a JLabel to hold the combined image
+        JLabel label = new JLabel(new ImageIcon(combinedImage));
 
         // Create a JFrame to display the CV
         JFrame frame = new JFrame("CV Viewer");
@@ -52,6 +55,7 @@ public class CVHandler1 {
         frame.pack();
         frame.setLocationRelativeTo(null); // Center the frame on the screen
         frame.setVisible(true);
+//        frame.setResizable(false);
     }
 
     private BufferedImage scaleImage(BufferedImage originalImage, int maxWidth, int maxHeight) {
@@ -76,31 +80,43 @@ public class CVHandler1 {
 
             // Execute SQL query to fetch user information
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT information.FName, information.LName, information.Address, " +
-                            "information_phonenumber.PhoneNumber, information_email.Email, " +
-                            "information.AvatarPicture, major.MajorName, achievement.AchName, " +
-                            "hobbies.HobbName, education.EduName, workexperience.ExName " +
-                            "FROM information " +
+                    "SELECT FName, LName, Address, PhoneNumber, Email, AvatarPicture, MajorName, " +
+                            "AchName, AchiDescription, HobbName, HobbDescription, EduName, EduDescription, ExName, ExDescription, SkillName, SkillDescription FROM information " +
+
                             "LEFT JOIN information_phonenumber ON information.InfoID = information_phonenumber.InfoID " +
                             "LEFT JOIN information_email ON information.InfoID = information_email.InfoID " +
                             "LEFT JOIN major ON information.UserID = major.UserID " +
                             "LEFT JOIN achievement ON information.UserID = achievement.UserID " +
                             "LEFT JOIN hobbies ON information.UserID = hobbies.UserID " +
                             "LEFT JOIN education ON information.UserID = education.UserID " +
-                            "LEFT JOIN workexperience ON information.UserID = workexperience.UserID"
+                            "LEFT JOIN workexperience ON information.UserID = workexperience.UserID " +
+                            "LEFT JOIN skill ON information.UserID = skill.UserID"
             );
 
             if (resultSet.next()) {
                 // Retrieve info from information table
                 cvData.setFullName(resultSet.getString("FName") + " " + resultSet.getString("LName"));
+
                 cvData.setAddress(resultSet.getString("Address"));
                 cvData.setPhoneNumber(resultSet.getString("PhoneNumber"));
                 cvData.setEmail(resultSet.getString("Email"));
+
                 cvData.setMajor(resultSet.getString("MajorName"));
+
                 cvData.setAchievement(resultSet.getString("AchName"));
+                cvData.setAchievementDescription(resultSet.getString("AchiDescription"));
+
                 cvData.setHobby(resultSet.getString("HobbName"));
+                cvData.setHobbyDescription(resultSet.getString("HobbDescription"));
+
                 cvData.setEducation(resultSet.getString("EduName"));
+                cvData.setEducationDescription(resultSet.getString("EduDescription"));
+
                 cvData.setExperience(resultSet.getString("ExName"));
+                cvData.setExperienceDescription(resultSet.getString("ExDescription"));
+
+                cvData.setSkillName(resultSet.getString("SkillName"));
+                cvData.setSkillDescription(resultSet.getString("SkillDescription"));
 
                 // Retrieve avatar picture
                 Blob avatarBlob = resultSet.getBlob("AvatarPicture");
@@ -127,46 +143,65 @@ public class CVHandler1 {
     private void renderCVData(Graphics g, CVData cvData) {
         // Render CV data onto the template
 
-        g.setFont(new Font("Arial", Font.BOLD, 12));
-        // Render white text
+        g.setFont(new Font("Arial", Font.BOLD, 25));
         g.setColor(Color.white);
-
         g.drawString(cvData.getFullName(), 10, 200); //Name
 
-        g.drawString(cvData.getMajor(), 10, 100); // Major
 
-        g.drawString(cvData.getAddress(), 10, 300); //Address
+        Font majorFont = new Font("Arial", Font.PLAIN, 15);
+        g.setFont(majorFont);
+        g.drawString(cvData.getMajor(), 30, 235); // Major
 
-        String phoneNumber = cvData.getPhoneNumber() != null ? cvData.getPhoneNumber() : "Not Provided"; //phone
-        g.drawString(phoneNumber, 10, 400);
 
-        String email = cvData.getEmail() != null ? cvData.getEmail() : "Not Provided"; //email
-        g.drawString(email, 10, 500);
+        g.setFont(new Font("Arial", Font.PLAIN, 10));
+        g.setColor(Color.white);
 
-        // Check if avatar image is available
+        // Contact
+        g.drawString(cvData.getAddress(), 40, 504); //Address
+        String phoneNumber = cvData.getPhoneNumber() != null ? cvData.getPhoneNumber() : "PhoneNum Not Provided"; //phone
+        g.drawString(phoneNumber, 40, 530);
+        String email = cvData.getEmail() != null ? cvData.getEmail() : "Email Not Provided"; //email
+        g.drawString(email, 40, 556);
+
+        // Avatar image
         BufferedImage avatarImage = cvData.getAvatar();
         if (avatarImage != null) {
-            // Avatar image position
+            // Avatar position
             g.drawImage(avatarImage, 60, 60, null); // Adjust the position as needed
         } else {
             // If avatar image is not available, draw a square
-            g.setColor(Color.yellow);
-            g.fillRect(0, 0, 100, 100);
+            g.setColor(Color.cyan);
+            g.fillRect(0, 0, 178, 164);
         }
+
+
         // Render in black text
         g.setColor(Color.black);
 
-        String achievement = cvData.getAchievement() != null ? cvData.getAchievement() : "Not Provided";
-        g.drawString(achievement, 300, 200); // Achievement
+        String achievement = cvData.getAchievement() != null ? cvData.getAchievement() : "Achieve Name Not Provided";
+        String achievementDescription = cvData.getAchievementDescription() != null ? cvData.getAchievementDescription() : "Achieve Description Not Provided";
+        g.drawString("Achie: " + achievement, 220, 200); // Achievement
+        g.drawString("Description: " + achievementDescription, 220, 220); // Achievement Description
 
-        String hobby = cvData.getHobby() != null ? cvData.getHobby() : "Not Provided";
-        g.drawString(hobby, 300, 300); // Hobby
+        String hobby = cvData.getHobby() != null ? cvData.getHobby() : "Hobby Name Not Provided";
+        String hobbyDescription = cvData.getHobbyDescription() != null ? cvData.getHobbyDescription() : "Hobby Description Not Provided";
+        g.drawString("Hobby: " + hobby, 220, 300); // Hobby
+        g.drawString("Description: " + hobbyDescription, 220, 320); // Hobby Description
 
-        String education = cvData.getEducation() != null ? cvData.getEducation() : "Not Provided";
-        g.drawString(education, 300, 400); // Education
+        String education = cvData.getEducation() != null ? cvData.getEducation() : "Edu Name Not Provided";
+        String educationDescription = cvData.getEducationDescription() != null ? cvData.getEducationDescription() : "Edu Description Not Provided";
+        g.drawString("Edu: " + education, 220, 400); // Education
+        g.drawString("Description: " + educationDescription, 220, 420); // Education Description
 
-        String experience = cvData.getExperience() != null ? cvData.getExperience() : "Not Provided";
-        g.drawString(experience, 300, 500); // Experience
+        String experience = cvData.getExperience() != null ? cvData.getExperience() : "Exp Name Not Provided";
+        String experienceDescription = cvData.getExperienceDescription() != null ? cvData.getExperienceDescription() : "Exp Description Not Provided";
+        g.drawString("Exp: " + experience, 220, 500); // Experience
+        g.drawString("Description: " + experienceDescription, 220, 520); // Experience Description
+
+        String skillName = cvData.getSkillName() != null ? cvData.getSkillName() : "Skill Name Not Provided";
+        String skillDescription = cvData.getSkillDescription() != null ? cvData.getSkillDescription() : "Skill Description Not Provided";
+        g.drawString("Skill: " + skillName, 220, 600);
+        g.drawString("Description: " + skillDescription, 220, 620);
 
     }
 }
