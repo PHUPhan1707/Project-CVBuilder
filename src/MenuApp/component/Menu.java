@@ -1,5 +1,6 @@
 package MenuApp.component;
 
+import imageslider.slider;
 import MenuApp.event.EventMenu;
 import MenuApp.event.EventMenuCallBack;
 import MenuApp.event.EventMenuSelected;
@@ -69,7 +70,6 @@ public class Menu extends javax.swing.JPanel {
                         menuY = menuYTarget;
                         repaint();
                         timer.stop();
-                        callBack.call(selectedIndex);
                         if (event != null) {
                             event.menuIndexChange(selectedIndex);
                         }
@@ -84,7 +84,7 @@ public class Menu extends javax.swing.JPanel {
                         timer.stop();
                         callBack.call(selectedIndex);
                         if (event != null) {
-                            event.menuIndexChange(selectedIndex);
+                            new slider().setVisible(true);
                         }
                     } else {
                         menuY += speed;
@@ -97,10 +97,10 @@ public class Menu extends javax.swing.JPanel {
     }
 
     private void initData() {
-        listMenu.addItem(new Model_Menu("1", "Dashboard", Model_Menu.MenuType.MENU));
-        listMenu.addItem(new Model_Menu("2", "UI Elements", Model_Menu.MenuType.MENU));
-        listMenu.addItem(new Model_Menu("3", "Comonents", Model_Menu.MenuType.MENU));
-        listMenu.addItem(new Model_Menu("4", "Forms Stuff", Model_Menu.MenuType.MENU));
+        listMenu.addItem(new Model_Menu("1", "View Template Demo", Model_Menu.MenuType.MENU));
+        listMenu.addItem(new Model_Menu("2", "In developing", Model_Menu.MenuType.MENU));
+        listMenu.addItem(new Model_Menu("3", "In developing", Model_Menu.MenuType.MENU));
+        listMenu.addItem(new Model_Menu("4", "In developing", Model_Menu.MenuType.MENU));
         listMenu.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
     }
 
