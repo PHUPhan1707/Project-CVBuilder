@@ -141,13 +141,15 @@ public class CVHandler1 {
 
         Font majorFont = new Font("Arial", Font.PLAIN, 15);
         g.setFont(majorFont);
-        g.drawString(cvData.getMajor(), 45, 235); // Major
+        String major = cvData.getMajor() != null ? cvData.getMajor() : "Major Not Provided";
+        g.drawString(major, 45, 235); // Major
 
         g.setFont(new Font("Arial", Font.PLAIN, 10));
         g.setColor(Color.white);
 
         // Contact
-        g.drawString(cvData.getAddress(), 40, 504); //Address
+        String address = cvData.getAddress() != null ? cvData.getAddress() : "Address Not Provided";
+        g.drawString(address, 40, 504); //Address
         String phoneNumber = cvData.getPhoneNumber() != null ? cvData.getPhoneNumber() : "PhoneNum Not Provided"; //phone
         g.drawString(phoneNumber, 40, 530);
         String email = cvData.getEmail() != null ? cvData.getEmail() : "Email Not Provided"; //email
