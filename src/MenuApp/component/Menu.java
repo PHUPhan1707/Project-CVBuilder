@@ -1,6 +1,6 @@
 package MenuApp.component;
 
-import imageslider.slider;
+import ImageSlider.imageslider.*;
 import MenuApp.event.EventMenu;
 import MenuApp.event.EventMenuCallBack;
 import MenuApp.event.EventMenuSelected;
