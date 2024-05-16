@@ -15,7 +15,7 @@ public class CVHandler1 {
     private static final int MAX_HEIGHT = 716; // Maximum height for scaling
 
     public void displayCV() {
-        // Load your CV template image
+        // Load CV template image
         BufferedImage cvTemplate;
         try {
             cvTemplate = ImageIO.read(new File(CV_TEMPLATE_PATH));
@@ -61,7 +61,7 @@ public class CVHandler1 {
         int newWidth = Math.min(originalImage.getWidth(), maxWidth);
         int newHeight = Math.min(originalImage.getHeight(), maxHeight);
 
-        // Create a new image with the scaled dimensions
+        // Create a new image with scaled dimensions
         BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = scaledImage.createGraphics();
         g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
@@ -141,23 +141,25 @@ public class CVHandler1 {
 
         Font majorFont = new Font("Arial", Font.PLAIN, 15);
         g.setFont(majorFont);
-        g.drawString(cvData.getMajor(), 45, 235); // Major
+        String major = cvData.getMajor() != null ? cvData.getMajor() : "Major Not Provided";
+        g.drawString(major, 45, 235); // Major
 
         g.setFont(new Font("Arial", Font.PLAIN, 10));
         g.setColor(Color.white);
 
         // Contact
-        g.drawString(cvData.getAddress(), 40, 504); //Address
-        String phoneNumber = cvData.getPhoneNumber() != null ? cvData.getPhoneNumber() : "PhoneNum Not Provided"; //phone
+        String address = cvData.getAddress() != null ? cvData.getAddress() : "Address Not Provided";
+        g.drawString(address, 40, 504); //Address
+        String phoneNumber = cvData.getPhoneNumber() != null ? cvData.getPhoneNumber() : "PhoneNum Not Provided"; // phone
         g.drawString(phoneNumber, 40, 530);
-        String email = cvData.getEmail() != null ? cvData.getEmail() : "Email Not Provided"; //email
+        String email = cvData.getEmail() != null ? cvData.getEmail() : "Email Not Provided"; // email
         g.drawString(email, 40, 556);
 
         // Avatar image
         BufferedImage avatarImage = cvData.getAvatar();
         if (avatarImage != null) {
             // Avatar position
-            g.drawImage(avatarImage, 60, 60, null); // Adjust the position as needed
+            g.drawImage(avatarImage, 60, 60, null); 
         } else {
             // If avatar image is not available, draw a square
             g.setColor(Color.cyan);
