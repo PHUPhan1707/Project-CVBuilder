@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 
-public class CVHandle2 {
-        private static final String CV_TEMPLATE_PATH = "png/CV_2 blank.png";
+public class CVHandler3 {
+        private static final String CV_TEMPLATE_PATH = "png/cv 3 blank.png";
         private static final int MAX_WIDTH = 510; // Maximum width for scaling
         private static final int MAX_HEIGHT = 716; // Maximum height for scaling
 
@@ -137,23 +137,23 @@ public class CVHandle2 {
             g.setFont(new Font("Arial", Font.BOLD, 25));
             g.setColor(Color.BLACK);
             String fullName = cvData.getFullName() != null ? cvData.getFullName() : "Name Not Provided"; //Name
-            g.drawString(fullName, 210, 60);
+            g.drawString(fullName, 240, 35);
 
             Font majorFont = new Font("Arial", Font.PLAIN, 15);
             g.setFont(majorFont);
             String major = cvData.getMajor() != null ? cvData.getMajor() : "Major Not Provided";
-            g.drawString(major, 350, 90); // Major
+            g.drawString(major, 310, 62); // Major
 
             g.setFont(new Font("Arial", Font.PLAIN, 10));
             g.setColor(Color.black);
 
             // Contact
             String address = cvData.getAddress() != null ? cvData.getAddress() : "Address Not Provided";
-            g.drawString(address, 60, 286); //Address
+            g.drawString(address, 38, 212); //Address
             String phoneNumber = cvData.getPhoneNumber() != null ? cvData.getPhoneNumber() : "PhoneNum Not Provided"; //phone
-            g.drawString(phoneNumber, 60, 268);
-            String email = cvData.getEmail() != null ? cvData.getEmail() : "Email Not Provided"; //email
-            g.drawString(email, 60, 304);
+            g.drawString(phoneNumber, 38, 240);
+//            String email = cvData.getEmail() != null ? cvData.getEmail() : "Email Not Provided"; //email
+//            g.drawString(email, 60, 304);
 
             // Avatar image
             BufferedImage avatarImage = cvData.getAvatar();
@@ -169,31 +169,31 @@ public class CVHandle2 {
 
             g.setColor(Color.black);
 
-            int y = 606; // Starting y-coordinate
+            int y = 633; // Starting y-coordinate
             if (cvData.getAchievements().isEmpty()) { // If achievements list is empty
-                g.drawString("Achievement: Not provided", 38, y);
-                g.drawString("Description: Not provided", 38, y + 18);
+                g.drawString("Achievement: Not provided", 213, y);
+                g.drawString("Description: Not provided", 213, y + 18);
             } else {
                 for (int i = 0; i < Math.min(1, cvData.getAchievements().size()); i++) { // maximum 1
                     String achievement = cvData.getAchievements().get(i);
                     String achievementDescription = cvData.getAchievementDescriptions().get(i);
-                    g.drawString("Achievement: " + achievement, 38, y); // Achievement
-                    g.drawString("Description: " + achievementDescription, 38, y + 18); // Achievement Description
+                    g.drawString("Achievement: " + achievement, 213, y); // Achievement
+                    g.drawString("Description: " + achievementDescription, 213, y + 18); // Achievement Description
                     y += 36; // Move to the next entry
                 }
             }
 
             // Render hobbies
-            y = 606; // Starting y-coordinate
+            y = 600; // Starting y-coordinate
             if (cvData.getHobbies().isEmpty()) { // If hobbies list is empty
-                g.drawString("Hobby: Not provided", 224, y);
-                g.drawString("Description: Not provided", 224, y + 18);
+                g.drawString("Hobby: Not provided", 20, y);
+                g.drawString("Description: Not provided", 20, y + 18);
             } else {
                 for (int i = 0; i < Math.min(1, cvData.getHobbies().size()); i++) { // maximum 1
                     String hobby = cvData.getHobbies().get(i);
                     String hobbyDescription = cvData.getHobbyDescriptions().get(i);
-                    g.drawString("Hobby: " + hobby, 224, y); // Hobby
-                    g.drawString("Description: " + hobbyDescription, 224, y + 18); // Hobby Description
+                    g.drawString("Hobby: " + hobby, 20, y); // Hobby
+                    g.drawString("Description: " + hobbyDescription, 20, y + 18); // Hobby Description
                     y += 36; // Move to the next entry
                 }
             }
@@ -247,3 +247,4 @@ public class CVHandle2 {
             }
         }
     }
+
