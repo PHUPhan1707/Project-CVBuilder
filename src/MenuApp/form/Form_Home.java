@@ -6,6 +6,7 @@ import MenuApp.swing.ScrollBar;
 import MenuApp.swing.WrapLayout;
 import SystemCVBuilder.AddInfo;
 import SystemCVBuilder.AddInfo2;
+import SystemCVBuilder.AddInfo3;
 
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
@@ -31,8 +32,6 @@ public class Form_Home extends javax.swing.JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // Thực hiện hành động khi nhấp vào card 1
-                AddInfo addInfo = new AddInfo();
-                addInfo.setVisible(true);
             }
         });
 
@@ -54,13 +53,14 @@ public class Form_Home extends javax.swing.JPanel {
         Card card3 = new Card(new Model_Card(new ImageIcon(getClass().getResource("/MenuApp/icon/testing/cv3.jpg")), "Black & White Template", "A minimal black and white template\nthat can make\nreaders to feel more comfortable\nand easier to keep track"));
         panel.add(card3);
 
-        // Thêm sự kiện cho card 3 (nếu cần)
-        // card3.addMouseListener(new MouseAdapter() {
-        //     @Override
-        //     public void mouseClicked(MouseEvent e) {
-        //         // Thực hiện hành động khi nhấp vào card 3
-        //     }
-        // });
+
+         card3.addMouseListener(new MouseAdapter() {
+             @Override
+             public void mouseClicked(MouseEvent e) {
+                 AddInfo3 addInfo3 = new AddInfo3();
+                 addInfo3.setVisible(true);
+             }
+         });
 
         panel.revalidate();
         panel.repaint();
@@ -111,8 +111,8 @@ public class Form_Home extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panel;
-    // End of variables declaration//GEN-END:variables
+
 }

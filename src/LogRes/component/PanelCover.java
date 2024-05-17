@@ -122,7 +122,7 @@ public class PanelCover extends javax.swing.JPanel {
     private void login(boolean login) {
         if (this.isLogin != login) {
             if (login) {
-                title.setText("hello, Friend!");
+                title.setText("Hello, Friend!");
                 description.setText("Enter your personal details");
                 description1.setText("and start journey with us");
                 button.setText("SIGN UP");

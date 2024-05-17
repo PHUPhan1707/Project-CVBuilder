@@ -5,11 +5,13 @@
  */
 package ImageSlider;
 
+
 import java.awt.Image;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import ImageSlider.*;
 
 /**
  *
@@ -27,21 +29,21 @@ public class slider extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     int position=0;
-public String[] takeimage()
-{
-    File f=new File(getClass().getResource("/image").getFile());
-    String[] Images=f.list();
-    return Images;
-}
+    public String[] takeimage()
+    {
+        File f=new File(getClass().getResource("/image").getFile());
+        Images = f.list();
+        return Images;
+    }
 
-public void show(int index)
-{
-    String[] Images=takeimage();
-    String img=Images[index];
-    ImageIcon icon=new ImageIcon(getClass().getResource("/image/"+img));
-    Image image=icon.getImage().getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
-    label1.setIcon(new ImageIcon(image));
-}
+    public void show(int index)
+    {
+        String[] Images = takeimage();
+        String img = Images[index];
+        ImageIcon icon = new ImageIcon(getClass().getResource("/image/"+img));
+        Image image=icon.getImage().getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
+        label1.setIcon(new ImageIcon(image));
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,20 +61,20 @@ public void show(int index)
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-       
+
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE);
         //setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-       // jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imageslider/icons8_Cancel_30px.png"))); // NOI18N
-        //jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-        //    public void mousePressed(java.awt.event.MouseEvent evt) {
-        //        jLabel2MousePressed(evt);
-        //    }
-        //});
-        //getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 0, 30, 40));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imageslider/icons8_Cancel_30px.png"))); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel2MousePressed(evt);
+            }
+        });
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 30, 40));
 
-        previous.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageSlider/icons8_Back_To_64px.png"))); // NOI18N
+        previous.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageSlider/back.png"))); // NOI18N
         previous.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 previousMousePressed(evt);
@@ -96,17 +98,17 @@ public void show(int index)
     }// </editor-fold>//GEN-END:initComponents
 
     private void nextMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextMousePressed
-      new Thread();
+        new Thread();
         try {
             Thread.sleep(300);
         } catch (InterruptedException ex) {
             Logger.getLogger(slider.class.getName()).log(Level.SEVERE, null, ex);
         }
         int p=this.label1.getX();
-        
+
         if(p>-1)
         {
-          Animacion.Animacion.mover_izquierda(600, 800, 1, 2, label1);
+            Animacion.Animacion.mover_izquierda(600, 800, 1, 2, label1);
         }
         position=position+1;
         if(position>=takeimage().length)
@@ -117,19 +119,19 @@ public void show(int index)
     }//GEN-LAST:event_nextMousePressed
 
     private void previousMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previousMousePressed
-       new Thread();
+        new Thread();
         try {
             Thread.sleep(300);
         } catch (InterruptedException ex) {
             Logger.getLogger(slider.class.getName()).log(Level.SEVERE, null, ex);
         }
         int p=this.label1.getX();
-        
+
         if(p>-1)
         {
-          Animacion.Animacion.mover_izquierda(600, 800, 1, 2, label1);
+            Animacion.Animacion.mover_izquierda(600, 800, 1, 2, label1);
         }
-          position=position-1;
+        position=position-1;
         if(position<0)
         {
             position=0;
@@ -138,7 +140,7 @@ public void show(int index)
     }//GEN-LAST:event_previousMousePressed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jLabel2MousePressed
 
     /**
@@ -148,7 +150,7 @@ public void show(int index)
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -178,6 +180,8 @@ public void show(int index)
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+
+    private String[] Images;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel label1;
@@ -185,3 +189,5 @@ public void show(int index)
     private javax.swing.JLabel previous;
     // End of variables declaration//GEN-END:variables
 }
+
+

@@ -277,7 +277,7 @@ public class AddInfo extends JFrame {
 
         JButton saveButton = new JButton("Save");
         add(saveButton);
-        saveButton.setBounds(250, 450, 100, 30);
+        saveButton.setBounds(200, 450, 100, 30);
 
         setSize(900, 600);
         setLocation(300, 50);
@@ -331,16 +331,16 @@ public class AddInfo extends JFrame {
 
         JButton searchButton = new JButton("Search User");
         add(searchButton);
-        searchButton.setBounds(600, 450, 120, 30);
+        searchButton.setBounds(550, 450, 120, 30);
 
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new SearchUser();
             }
         });
-        JButton exportPDFButton = new JButton("Export PDF");
+        JButton exportPDFButton = new JButton("Export PNG");
         add(exportPDFButton);
-        exportPDFButton.setBounds(450, 450, 120, 30);
+        exportPDFButton.setBounds(370, 450, 120, 30);
         exportPDFButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {

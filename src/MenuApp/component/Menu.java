@@ -85,7 +85,7 @@ public class Menu extends javax.swing.JPanel {
                         timer.stop();
                         callBack.call(selectedIndex);
                         if (event != null) {
-                            new slider().setVisible(false);
+                            new slider().setVisible(true);
                         }
                     } else {
                         menuY += speed;
