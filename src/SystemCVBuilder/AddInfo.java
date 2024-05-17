@@ -3,24 +3,12 @@ package SystemCVBuilder;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import com.itextpdf.awt.geom.AffineTransform;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.PdfDocument;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.image.BufferedImage;
-
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.ByteArrayOutputStream;
 import java.sql.*;
 
@@ -31,7 +19,7 @@ public class AddInfo extends JFrame {
     private JButton uploadButton;
     private String imagePath;
     private byte[] imageData;
-    private int UserID;
+    private int userID;
 
     private JFrame frame;
 
@@ -186,6 +174,26 @@ public class AddInfo extends JFrame {
         emailField.setBounds(textFieldXPosition, yPosition, textFieldWidth, labelHeight);
         emailField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
 
+        JLabel hobbyLabel = new JLabel("Hobby:");
+        hobbyLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
+        add(hobbyLabel);
+        hobbyLabel.setBounds(50, yPosition+gap, labelWidth, labelHeight);
+
+        JTextField hobbyField = new JTextField();
+        add(hobbyField);
+        hobbyField.setBounds(textFieldXPosition, yPosition+gap, textFieldWidth, labelHeight);
+        hobbyField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
+
+        JLabel achievementLabel = new JLabel("Achievement:");
+        achievementLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
+        add(achievementLabel);
+        achievementLabel.setBounds(370, yPosition+gap, labelWidth, labelHeight);
+
+        JTextField achievementField = new JTextField();
+        add(achievementField);
+        achievementField.setBounds(460, yPosition+gap, textFieldWidth-10, labelHeight);
+        achievementField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
+
         yPosition = 120;
 
         // University Section
@@ -201,15 +209,15 @@ public class AddInfo extends JFrame {
 
         yPosition += gap;
 
-        JLabel degreeLabel = new JLabel("Degree:");
-        degreeLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
-        add(degreeLabel);
-        degreeLabel.setBounds(370, yPosition, labelWidth, labelHeight);
+        JLabel majorLabel = new JLabel("Major:");
+        majorLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
+        add(majorLabel);
+        majorLabel.setBounds(370, yPosition, labelWidth, labelHeight);
 
-        JTextField degreeField = new JTextField();
-        add(degreeField);
-        degreeField.setBounds(450, yPosition, textFieldWidth, labelHeight);
-        degreeField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
+        JTextField majorField = new JTextField();
+        add(majorField);
+        majorField.setBounds(450, yPosition, textFieldWidth, labelHeight);
+        majorField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
 
         yPosition += gap;
 
@@ -277,78 +285,59 @@ public class AddInfo extends JFrame {
 
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Connection conn = null;
-                PreparedStatement statementUser = null;
-                PreparedStatement statementCV = null;
-                ResultSet resultSet = null;
-
                 try {
-                    conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
-                    conn.setAutoCommit(false);  // Start transaction
-
-                    // Step 1: Insert into user table
-                    String sqlUser = "INSERT INTO user (email) VALUES (?)";
-                    statementUser = conn.prepareStatement(sqlUser, Statement.RETURN_GENERATED_KEYS);
-                    statementUser.setString(1, emailField.getText());
-                    statementUser.executeUpdate();
-
-                    resultSet = statementUser.getGeneratedKeys();
-                    int newUserId = 0;
-                    if (resultSet.next()) {
-                        newUserId = resultSet.getInt(1);
-                    } else {
-                        throw new SQLException("Failed to retrieve user_ID.");
-                    }
-
-                    // Step 2: Insert into informationcv table
-                    String sqlCV = "INSERT INTO informationcv (FName, LName, dob, Address, phone, nationality, email, university, degree, skill1, skill2, skill3, experience, avatar, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    statementCV = conn.prepareStatement(sqlCV);
-                    statementCV.setString(1, tfFirstName.getText());
-                    statementCV.setString(2, tfLastName.getText());
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
+                    String sql = "INSERT INTO informationcv (FName, LName, dob, Address, phone, nationality, email, university, major, skill1, skill2, skill3, experience,hobby,achievement, avatar) VALUES (?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+                    PreparedStatement statement = conn.prepareStatement(sql);
+                    statement.setString(1, tfFirstName.getText());
+                    statement.setString(2, tfLastName.getText());
                     java.sql.Date dob = new java.sql.Date(tfdob.getDate().getTime());
-                    statementCV.setDate(3, dob);
-                    statementCV.setString(4, address1Field.getText());
-                    statementCV.setString(5, postCodeField.getText());
-                    statementCV.setString(6, nationalityField.getText());
-                    statementCV.setString(7, emailField.getText());
-                    statementCV.setString(8, universityField.getText());
-                    statementCV.setString(9, degreeField.getText());
-                    statementCV.setString(10, skillsField1.getText());
-                    statementCV.setString(11, skillsField2.getText());
-                    statementCV.setString(12, skillsField3.getText());
-                    statementCV.setString(13, experienceField.getText());
-                    statementCV.setBytes(14, imageData);
-                    statementCV.setInt(15, newUserId);  // Use the retrieved user_ID
-
-                    int rowsInserted = statementCV.executeUpdate();
+                    statement.setDate(3, dob);
+                    statement.setString(4, address1Field.getText());
+                    statement.setString(5, postCodeField.getText());
+                    statement.setString(6, nationalityField.getText());
+                    statement.setString(7, emailField.getText());
+                    statement.setString(8, universityField.getText());
+                    statement.setString(9, majorField.getText());
+                    statement.setString(10, skillsField1.getText());
+                    statement.setString(11, skillsField2.getText());
+                    statement.setString(12, skillsField3.getText());
+                    statement.setString(13, experienceField.getText());
+                    statement.setString(14, hobbyField.getText());
+                    statement.setString(15, achievementField.getText());
+                    statement.setBytes(16, imageData);
+                    int rowsInserted = statement.executeUpdate();
                     if (rowsInserted > 0) {
                         System.out.println("Thông tin đã được lưu vào cơ sở dữ liệu!");
-                    }
-
-                    conn.commit();  // Commit transaction
-
-                } catch (SQLException ex) {
-                    if (conn != null) {
                         try {
-                            conn.rollback();  // Rollback transaction on error
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
+                            Connection connGetID = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
+                            String sqlGetID = "SELECT LAST_INSERT_ID()";
+                            PreparedStatement statementGetID = conn.prepareStatement(sqlGetID);
+                            ResultSet resultSet = statementGetID.executeQuery();
+                            if (resultSet.next()) {
+                                userID = resultSet.getInt(1);
+                            }
+                            conn.close();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
                         }
                     }
+                    conn.close();
+                } catch (SQLException ex) {
                     ex.printStackTrace();
-                } finally {
-                    try {
-                        if (resultSet != null) resultSet.close();
-                        if (statementUser != null) statementUser.close();
-                        if (statementCV != null) statementCV.close();
-                        if (conn != null) conn.close();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
                 }
             }
-});
+        });
 
+        JButton searchButton = new JButton("Search User");
+        add(searchButton);
+        searchButton.setBounds(600, 450, 120, 30);
+
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new SearchUser();
+            }
+        });
         JButton exportPDFButton = new JButton("Export PDF");
         add(exportPDFButton);
         exportPDFButton.setBounds(450, 450, 120, 30);
@@ -428,11 +417,11 @@ public class AddInfo extends JFrame {
                     universityLabel.setBounds(680, 610, 400, 30);
                     label.add(universityLabel);
 
-                    JLabel degreeLabel = new JLabel("Degree: ");
-                    degreeLabel.setFont(new Font("Arial", Font.PLAIN, 23));
-                    degreeLabel.setForeground(Color.BLACK);
-                    degreeLabel.setBounds(680, 650, 400, 30);
-                    label.add(degreeLabel);
+                    JLabel majorLabel = new JLabel("Major: ");
+                    majorLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    majorLabel.setForeground(Color.BLACK);
+                    majorLabel.setBounds(680, 650, 400, 30);
+                    label.add(majorLabel);
 
                     JLabel skill1Label = new JLabel("Skill 1: ");
                     skill1Label.setFont(new Font("Arial", Font.PLAIN, 23));
@@ -462,6 +451,25 @@ public class AddInfo extends JFrame {
                     experienceLabel.setBounds(680, 1000, 400, 200);
                     experienceLabel.setOpaque(false);
                     label.add(experienceLabel);
+
+                    JLabel hobbyLabel = new JLabel("Hobby: ");
+                    hobbyLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+                    hobbyLabel.setForeground(Color.BLACK);
+                    hobbyLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                    hobbyLabel.setBounds(650, 1450, 400, 30);
+                    label.add(hobbyLabel);
+
+                    JTextArea achievementLabel = new JTextArea("Achievement: ");
+                    achievementLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+                    achievementLabel.setForeground(Color.BLACK);
+                    achievementLabel.setOpaque(false); // Để JTextArea trong suốt giống như JLabel
+                    achievementLabel.setEditable(false);
+                    achievementLabel.setLineWrap(true);
+                    achievementLabel.setWrapStyleWord(true);
+                    achievementLabel.setBounds(280, 1425, 300, 60);
+                    achievementLabel.setBorder(null); // Loại bỏ viền của JTextArea
+
+                    label.add(achievementLabel);
 
                     // Tạo JScrollPane để chứa JLabel và tạo thanh cuộn khi cần
                     JScrollPane scrollPane = new JScrollPane(label);
@@ -520,11 +528,11 @@ public class AddInfo extends JFrame {
                     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     // Hiển thị cửa sổ JFrame
                     frame.setVisible(true);
-                    try {// layas từ data nè 2 cái
+                    try {
                         Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
                         String sql = "SELECT * FROM informationcv WHERE id=?";
                         PreparedStatement statement = conn.prepareStatement(sql);
-                        statement.setInt(1, UserID); // Assuming 1 is the ID of the record you want to retrieve
+                        statement.setInt(1, userID); // Assuming 1 is the ID of the record you want to retrieve
                         ResultSet resultSet = statement.executeQuery();
 
                         if (resultSet.next()) {
@@ -535,10 +543,13 @@ public class AddInfo extends JFrame {
                             String nationality = resultSet.getString("nationality");
                             String email = resultSet.getString("email");
                             String university = resultSet.getString("university");
-                            String degree = resultSet.getString("degree");
+                            String major = resultSet.getString("major");
                             String skill1 = resultSet.getString("skill1");
                             String skill2 = resultSet.getString("skill2");
                             String skill3 = resultSet.getString("skill3");
+                            String hobby = resultSet.getString("hobby");
+                            String achievement = resultSet.getString("achievement");
+
                             String experience = resultSet.getString("experience");
 
                             // Update JLabels with retrieved data
@@ -553,7 +564,7 @@ public class AddInfo extends JFrame {
                             ageLabel.setFont(new Font("Arial", Font.PLAIN, 20));
                             ageLabel.setForeground(Color.BLACK);
                             ageLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-                            ageLabel.setBounds(550, 400, 400, 30);
+                            ageLabel.setBounds(520, 370, 400, 30);
 
                             addressLabel.setText(address);
                             phoneLabel.setText(postCode);
@@ -563,7 +574,9 @@ public class AddInfo extends JFrame {
                             skill1Label.setText("+" + skill1);
                             skill2Label.setText("+" + skill2);
                             skill3Label.setText("+" + skill3);
-                            degreeLabel.setText("+" + degree);
+                            majorLabel.setText("+" + major);
+                            hobbyLabel.setText("+" + hobby);
+                            achievementLabel.setText("+"+achievement);
                             experienceLabel.setText(experience);
 
                             // Set avatar icon if available

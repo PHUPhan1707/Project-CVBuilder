@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ImageSlider.imageslider;
+package ImageSlider;
 
 import java.awt.Image;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import org.netbeans.lib.awtextra.*;
-import Animacion.Animacion.*;
 
 /**
  *
@@ -74,7 +72,7 @@ public void show(int index)
         //});
         //getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 0, 30, 40));
 
-        previous.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imageslider/icons8_Back_To_64px.png"))); // NOI18N
+        previous.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageSlider/icons8_Back_To_64px.png"))); // NOI18N
         previous.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 previousMousePressed(evt);
@@ -82,7 +80,7 @@ public void show(int index)
         });
         getContentPane().add(previous, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, -1, 80));
 
-        next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imageslider/icons8_Next_page_52px.png"))); // NOI18N
+        next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageSlider/icons8_Next_page_52px.png"))); // NOI18N
         next.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 nextMousePressed(evt);
@@ -91,7 +89,7 @@ public void show(int index)
         getContentPane().add(next, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 400, -1, 50));
         getContentPane().add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 25, 500, 700));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imageslider/background.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageSlider/background.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 800));
 
         pack();

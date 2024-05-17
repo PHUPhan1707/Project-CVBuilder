@@ -174,6 +174,26 @@ public class AddInfo2 extends JFrame {
         emailField.setBounds(textFieldXPosition, yPosition, textFieldWidth, labelHeight);
         emailField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
 
+        JLabel hobbyLabel = new JLabel("Hobby:");
+        hobbyLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
+        add(hobbyLabel);
+        hobbyLabel.setBounds(50, yPosition+gap, labelWidth, labelHeight);
+
+        JTextField hobbyField = new JTextField();
+        add(hobbyField);
+        hobbyField.setBounds(textFieldXPosition, yPosition+gap, textFieldWidth, labelHeight);
+        hobbyField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
+
+        JLabel achievementLabel = new JLabel("Achievement:");
+        achievementLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
+        add(achievementLabel);
+        achievementLabel.setBounds(370, yPosition+gap, labelWidth, labelHeight);
+
+        JTextField achievementField = new JTextField();
+        add(achievementField);
+        achievementField.setBounds(460, yPosition+gap, textFieldWidth-10, labelHeight);
+        achievementField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
+
         yPosition = 120;
 
         // University Section
@@ -189,15 +209,15 @@ public class AddInfo2 extends JFrame {
 
         yPosition += gap;
 
-        JLabel degreeLabel = new JLabel("Degree:");
-        degreeLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
-        add(degreeLabel);
-        degreeLabel.setBounds(370, yPosition, labelWidth, labelHeight);
+        JLabel majorLabel = new JLabel("Major:");
+        majorLabel.setFont(new Font("SAN_SERIF", Font.PLAIN, 15));
+        add(majorLabel);
+        majorLabel.setBounds(370, yPosition, labelWidth, labelHeight);
 
-        JTextField degreeField = new JTextField();
-        add(degreeField);
-        degreeField.setBounds(450, yPosition, textFieldWidth, labelHeight);
-        degreeField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
+        JTextField majorField = new JTextField();
+        add(majorField);
+        majorField.setBounds(450, yPosition, textFieldWidth, labelHeight);
+        majorField.setFont(new Font("SAN_SERIF", Font.PLAIN, 12));
 
         yPosition += gap;
 
@@ -267,7 +287,7 @@ public class AddInfo2 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cvdata", "root", "123456");
-                    String sql = "INSERT INTO informationcv (FName, LName, dob, Address, phone, nationality, email, university, degree, skill1, skill2, skill3, experience, avatar) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+                    String sql = "INSERT INTO informationcv (FName, LName, dob, Address, phone, nationality, email, university, major, skill1, skill2, skill3, experience,hobby,achievement,avatar) VALUES (?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
                     PreparedStatement statement = conn.prepareStatement(sql);
                     statement.setString(1, tfFirstName.getText());
                     statement.setString(2, tfLastName.getText());
@@ -278,12 +298,14 @@ public class AddInfo2 extends JFrame {
                     statement.setString(6, nationalityField.getText());
                     statement.setString(7, emailField.getText());
                     statement.setString(8, universityField.getText());
-                    statement.setString(9, degreeField.getText());
+                    statement.setString(9, majorField.getText());
                     statement.setString(10, skillsField1.getText());
                     statement.setString(11, skillsField2.getText());
                     statement.setString(12, skillsField3.getText());
                     statement.setString(13, experienceField.getText());
-                    statement.setBytes(14, imageData);
+                    statement.setString(14, hobbyField.getText());
+                    statement.setString(15, achievementField.getText());
+                    statement.setBytes(16, imageData);
                     int rowsInserted = statement.executeUpdate();
                     if (rowsInserted > 0) {
                         System.out.println("Thông tin đã được lưu vào cơ sở dữ liệu!");
@@ -307,6 +329,15 @@ public class AddInfo2 extends JFrame {
             }
         });
 
+        JButton searchButton = new JButton("Search User");
+        add(searchButton);
+        searchButton.setBounds(600, 450, 120, 30);
+
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new SearchUser();
+            }
+        });
         JButton exportPDFButton = new JButton("Export PDF");
         add(exportPDFButton);
         exportPDFButton.setBounds(450, 450, 120, 30);
@@ -358,26 +389,26 @@ public class AddInfo2 extends JFrame {
                     JLabel addressLabel = new JLabel("Address: ");
                     addressLabel.setFont(new Font("Arial", Font.PLAIN, 23));
                     addressLabel.setForeground(Color.BLACK);
-                    addressLabel.setBounds(300, 480, 400, 30);
+                    addressLabel.setBounds(280, 480, 400, 30);
                     label.add(addressLabel);
 
                     JLabel phoneLabel = new JLabel("Phone: ");
-                    phoneLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    phoneLabel.setFont(new Font("Arial", Font.PLAIN, 25));
                     phoneLabel.setForeground(Color.BLACK);
-                    phoneLabel.setBounds(300, 535, 400, 30);
+                    phoneLabel.setBounds(280, 535, 400, 30);
                     label.add(phoneLabel);
 
                     JLabel nationalityLabel = new JLabel("Nationality: ");
-                    nationalityLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    nationalityLabel.setFont(new Font("Arial", Font.PLAIN, 25));
                     nationalityLabel.setForeground(Color.BLACK);
                     nationalityLabel.setBounds(695, 450, 400, 30);
                     label.add(nationalityLabel);
 
                     JLabel emailLabel = new JLabel("Email: ");
-                    emailLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    emailLabel.setFont(new Font("Arial", Font.PLAIN, 25));
                     emailLabel.setForeground(Color.BLACK);
                     emailLabel.setHorizontalAlignment(SwingConstants.LEFT);
-                    emailLabel.setBounds(300, 690, 400, 30);
+                    emailLabel.setBounds(280, 600, 400, 30);
                     label.add(emailLabel);
 
                     JLabel universityLabel = new JLabel("University: ");
@@ -386,41 +417,59 @@ public class AddInfo2 extends JFrame {
                     universityLabel.setBounds(680, 610, 400, 30);
                     label.add(universityLabel);
 
-                    JLabel degreeLabel = new JLabel("Degree: ");
-                    degreeLabel.setFont(new Font("Arial", Font.PLAIN, 23));
-                    degreeLabel.setForeground(Color.BLACK);
-                    degreeLabel.setBounds(680, 650, 400, 30);
-                    label.add(degreeLabel);
+                    JLabel majorLabel = new JLabel("Major: ");
+                    majorLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+                    majorLabel.setForeground(Color.BLACK);
+                    majorLabel.setBounds(680, 650, 400, 30);
+                    label.add(majorLabel);
 
                     JLabel skill1Label = new JLabel("Skill 1: ");
-                    skill1Label.setFont(new Font("Arial", Font.PLAIN, 23));
+                    skill1Label.setFont(new Font("Arial", Font.PLAIN, 25));
                     skill1Label.setForeground(Color.BLACK);
                     skill1Label.setHorizontalAlignment(SwingConstants.LEFT);
                     skill1Label.setBounds(280, 1000, 400, 30);
                     label.add(skill1Label);
 
                     JLabel skill2Label = new JLabel("Skill 2: ");
-                    skill2Label.setFont(new Font("Arial", Font.PLAIN, 23));
+                    skill2Label.setFont(new Font("Arial", Font.PLAIN, 25));
                     skill2Label.setForeground(Color.BLACK);
                     skill2Label.setHorizontalAlignment(SwingConstants.LEFT);
                     skill2Label.setBounds(280, 1075, 400, 30);
                     label.add(skill2Label);
 
                     JLabel skill3Label = new JLabel("Skill 3: ");
-                    skill3Label.setFont(new Font("Arial", Font.PLAIN, 23));
+                    skill3Label.setFont(new Font("Arial", Font.PLAIN, 25));
                     skill3Label.setForeground(Color.BLACK);
                     skill3Label.setHorizontalAlignment(SwingConstants.LEFT);
                     skill3Label.setBounds(280, 1150, 400, 30);
                     label.add(skill3Label);
 
                     JTextArea experienceLabel = new JTextArea("Experience: ");
-                    experienceLabel.setFont(new Font("Arial", Font.PLAIN, 23));
+                    experienceLabel.setFont(new Font("Arial", Font.PLAIN, 25));
                     experienceLabel.setForeground(Color.BLACK);
                     experienceLabel.setAlignmentX(SwingConstants.LEFT);
-                    experienceLabel.setBounds(680, 1000, 400, 200);
+                    experienceLabel.setBounds(680, 1050, 400, 200);
                     experienceLabel.setOpaque(false);
                     label.add(experienceLabel);
 
+                    JLabel hobbyLabel = new JLabel("Hobby: ");
+                    hobbyLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+                    hobbyLabel.setForeground(Color.BLACK);
+                    hobbyLabel.setHorizontalAlignment(SwingConstants.LEFT);
+                    hobbyLabel.setBounds(280, 1450, 400, 30);
+                    label.add(hobbyLabel);
+
+                    JTextArea achievementLabel = new JTextArea("Achievement: ");
+                    achievementLabel.setFont(new Font("Arial", Font.PLAIN, 25));
+                    achievementLabel.setForeground(Color.BLACK);
+                    achievementLabel.setOpaque(false); // Để JTextArea trong suốt giống như JLabel
+                    achievementLabel.setEditable(false);
+                    achievementLabel.setLineWrap(true);
+                    achievementLabel.setWrapStyleWord(true);
+                    achievementLabel.setBounds(650, 1480, 300, 60);
+                    achievementLabel.setBorder(null); // Loại bỏ viền của JTextArea
+
+                    label.add(achievementLabel);
                     // Tạo JScrollPane để chứa JLabel và tạo thanh cuộn khi cần
                     JScrollPane scrollPane = new JScrollPane(label);
                     scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -493,11 +542,14 @@ public class AddInfo2 extends JFrame {
                             String nationality = resultSet.getString("nationality");
                             String email = resultSet.getString("email");
                             String university = resultSet.getString("university");
-                            String degree = resultSet.getString("degree");
+                            String major = resultSet.getString("major");
                             String skill1 = resultSet.getString("skill1");
                             String skill2 = resultSet.getString("skill2");
                             String skill3 = resultSet.getString("skill3");
+                            String hobby = resultSet.getString("hobby");
+                            String achievement = resultSet.getString("achievement");
                             String experience = resultSet.getString("experience");
+
 
                             // Update JLabels with retrieved data
                             // Update the JLabels with retrieved data
@@ -521,7 +573,9 @@ public class AddInfo2 extends JFrame {
                             skill1Label.setText("+" + skill1);
                             skill2Label.setText("+" + skill2);
                             skill3Label.setText("+" + skill3);
-                            degreeLabel.setText("+" + degree);
+                            majorLabel.setText("+" + major);
+                            hobbyLabel.setText("+" + hobby);
+                            achievementLabel.setText("+"+achievement);
                             experienceLabel.setText(experience);
 
                             // Set avatar icon if available
@@ -529,10 +583,10 @@ public class AddInfo2 extends JFrame {
                             if (avatarData != null && avatarData.length > 0) {
                                 ImageIcon avatarIcon = new ImageIcon(avatarData);
                                 if (avatarIcon != null) {
-                                    Image scaledImage = avatarIcon.getImage().getScaledInstance(avatarLabel.getWidth() , avatarLabel.getHeight() , Image.SCALE_SMOOTH);
+                                    Image scaledImage = avatarIcon.getImage().getScaledInstance(avatarLabel.getWidth()+100 , avatarLabel.getHeight()+100 , Image.SCALE_SMOOTH);
                                     ImageIcon scaledAvatarIcon = new ImageIcon(scaledImage);
                                     avatarLabel.setIcon(scaledAvatarIcon);
-                                    avatarLabel.setBounds(avatarLabel.getX() + 111, avatarLabel.getY() - 175, avatarLabel.getWidth() * 2, avatarLabel.getHeight() * 2);
+                                    avatarLabel.setBounds(avatarLabel.getX() + 70, avatarLabel.getY() - 175, avatarLabel.getWidth() * 2, avatarLabel.getHeight() * 2);
                                 } else {
                                     System.out.println("Failed to create ImageIcon from avatarData");
                                 }

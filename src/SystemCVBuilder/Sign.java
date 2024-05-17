@@ -107,8 +107,7 @@ public class Sign extends JFrame implements ActionListener{
         if(e.getSource() == create){
             String atype= account.getSelectedItem();
             String susername= username.getText();
-            String sname= name.getText();
-            String spassword= password.getText();
+            String sname= name.getText();            String spassword= password.getText();
             String smeter= meter.getText();
         try {
             Conn c = new Conn();

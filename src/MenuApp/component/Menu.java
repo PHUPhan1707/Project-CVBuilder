@@ -1,6 +1,7 @@
 package MenuApp.component;
 
-import ImageSlider.imageslider.*;
+import ImageSlider.*;
+import ImageSlider.slider;
 import MenuApp.event.EventMenu;
 import MenuApp.event.EventMenuCallBack;
 import MenuApp.event.EventMenuSelected;
@@ -84,7 +85,7 @@ public class Menu extends javax.swing.JPanel {
                         timer.stop();
                         callBack.call(selectedIndex);
                         if (event != null) {
-                            new slider().setVisible(true);
+                            new slider().setVisible(false);
                         }
                     } else {
                         menuY += speed;
