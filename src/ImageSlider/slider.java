@@ -5,6 +5,7 @@
  */
 package ImageSlider;
 
+import ImageSlider.*;
 import java.awt.Image;
 import java.io.File;
 import java.util.logging.Level;
@@ -64,15 +65,15 @@ public void show(int index)
         //setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-       // jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imageslider/icons8_Cancel_30px.png"))); // NOI18N
-        //jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-        //    public void mousePressed(java.awt.event.MouseEvent evt) {
-        //        jLabel2MousePressed(evt);
-        //    }
-        //});
-        //getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 0, 30, 40));
+       jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imageslider/icons8_Cancel_30px.png"))); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+        jLabel2MousePressed(evt);
+            }
+        });
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 30, 40));
 
-        previous.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageSlider/icons8_Back_To_64px.png"))); // NOI18N
+        previous.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageSlider/back.png"))); // NOI18N
         previous.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 previousMousePressed(evt);
